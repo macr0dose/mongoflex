@@ -29,6 +29,7 @@ const Nav = () => {
           width={30}
           height={30}
           className='object-contain'
+          loading="eager"
         />
         <p className='logo_text'>Promptopia</p>
       </Link>
