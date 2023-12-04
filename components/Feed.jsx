@@ -1,32 +1,42 @@
 "use client"
 
-import React, { useState, useEffect } from "react";
-import dynamic from 'next/dynamic';
-
-// Dynamically import PromptCard with SSR disabled
-const PromptCard = dynamic(() => import('./PromptCard'), { ssr: false });
+import React from "react";
+import PromptCard from "./PromptCard";
 
 const Feed = () => {
-  const [searchText, setSearchText] = useState("");
-  const [posts, setPosts] = useState([]);
+  const [searchText, setSearchText] = React.useState("");
+  const [posts, setPosts] = React.useState([]);
 
-  async function fetchPromptData(search = '') {
+  async function fetchPromptData(search) {
     try {
       const res = await fetch(`/api/prompt?search=${search}`);
       const data = await res.json();
+      if (JSON.stringify(posts) === JSON.stringify(data)) return;
       setPosts(data);
     } catch (error) {
-      console.error(error);
+      console.log(error);
     }
   }
 
   const handleSearchChange = (e) => {
     setSearchText(e.target.value);
-    fetchPromptData(e.target.value);
+    const search = e.target.value;
+    // debounce the search function
+    debounce(() => {
+      fetchPromptData(search);
+    }, 500)();
   };
 
-  useEffect(() => {
-    fetchPromptData();
+  const handleTagClick = (tag) => {
+    fetchPromptData(tag);
+  };
+
+  const refreshPrompts = () => {
+    fetchPromptData(searchText);
+  };
+
+  React.useEffect(() => {
+    fetchPromptData("");
   }, []);
 
   return (
@@ -42,12 +52,14 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
-      <PromptCardList data={posts} handleTagClick={fetchPromptData} />
+      <PromptCardList data={posts} handleTagClick={handleTagClick} refreshPrompts={refreshPrompts} />
     </section>
   );
 };
 
-function PromptCardList({ data, handleTagClick }) {
+export default Feed;
+
+function PromptCardList({ data, handleTagClick, refreshPrompts }) {
   return (
     <div className="mt-16 prompt_layout">
       {data.map((post) => (
@@ -55,10 +67,20 @@ function PromptCardList({ data, handleTagClick }) {
           key={post._id}
           post={post}
           handleTagClick={handleTagClick}
+          refreshPrompts={refreshPrompts}
         />
       ))}
     </div>
   );
 }
 
-export default Feed;
+// Debounce function implementation
+function debounce(func, delay) {
+  let timer;
+  return function() {
+    const context = this;
+    const args = arguments;
+    clearTimeout(timer);
+    timer = setTimeout(() => func.apply(context, args), delay);
+  };
+}
