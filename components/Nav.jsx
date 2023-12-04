@@ -5,16 +5,11 @@ import Image from 'next/image';
 import { useState, useEffect } from 'react';
 import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
-import { useRouter } from 'next/navigation'
-import { useSession } from 'next-auth/react'
-
 const Nav = () => {
   const { data: session } = useSession();
 
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
-
-  const router = useRouter()
 
   useEffect(() => {
     const setUpProviders = async () => {
@@ -51,14 +46,13 @@ const Nav = () => {
               Sign Out
             </button>
 
-            <Link>
+            <Link href='/profile'>
               <Image
                 src={session?.user.image}
                 width={37}
                 height={37}
                 className='rounded-full'
                 alt='profile'
-                onClick={() => {router.push(`/profile/${post.creator._id}?name=${post.creator.username}`)}}
               />
             </Link>
           </div>
