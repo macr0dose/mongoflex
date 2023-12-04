@@ -1,43 +1,40 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import PromptCard from "./PromptCard";
 
 const Feed = () => {
-  const [searchText, setSearchText] = React.useState("");
-  const [posts, setPosts] = React.useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [posts, setPosts] = useState([]);
 
-  async function fetchPromptData(search) {
+  const fetchPromptData = async (search = "") => {
     try {
       const res = await fetch(`/api/prompt?search=${search}`);
       const data = await res.json();
-      if (JSON.stringify(posts) === JSON.stringify(data)) return;
       setPosts(data);
     } catch (error) {
-      console.log(error);
+      console.error("Error fetching data:", error);
     }
-  }
+  };
+
+  useEffect(() => {
+    fetchPromptData();
+  }, []);
 
   const handleSearchChange = (e) => {
-    setSearchText(e.target.value);
     const search = e.target.value;
-    // debounce the search function
-    debounce(() => {
-      fetchPromptData(search);
-    }, 500)();
+    setSearchText(search);
+    fetchPromptData(search);
   };
 
   const handleTagClick = (tag) => {
     fetchPromptData(tag);
   };
 
-  const refreshPrompts = () => {
+  // Function to refresh data after a prompt is updated or deleted
+  const refreshData = () => {
     fetchPromptData(searchText);
   };
-
-  React.useEffect(() => {
-    fetchPromptData("");
-  }, []);
 
   return (
     <section className="feed">
@@ -52,14 +49,14 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
-      <PromptCardList data={posts} handleTagClick={handleTagClick} refreshPrompts={refreshPrompts} />
+      <PromptCardList data={posts} handleTagClick={handleTagClick} refreshData={refreshData} />
     </section>
   );
 };
 
 export default Feed;
 
-function PromptCardList({ data, handleTagClick, refreshPrompts }) {
+function PromptCardList({ data, handleTagClick, refreshData }) {
   return (
     <div className="mt-16 prompt_layout">
       {data.map((post) => (
@@ -67,20 +64,9 @@ function PromptCardList({ data, handleTagClick, refreshPrompts }) {
           key={post._id}
           post={post}
           handleTagClick={handleTagClick}
-          refreshPrompts={refreshPrompts}
+          refreshData={refreshData} // Pass refreshData down to PromptCard
         />
       ))}
     </div>
   );
-}
-
-// Debounce function implementation
-function debounce(func, delay) {
-  let timer;
-  return function() {
-    const context = this;
-    const args = arguments;
-    clearTimeout(timer);
-    timer = setTimeout(() => func.apply(context, args), delay);
-  };
 }
