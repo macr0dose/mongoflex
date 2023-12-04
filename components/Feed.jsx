@@ -1,40 +1,33 @@
 "use client"
 
-import React, { useEffect, useState } from "react";
-import PromptCard from "./PromptCard";
+import React, { useState, useEffect } from "react";
+import dynamic from 'next/dynamic';
+
+// Dynamically import PromptCard with SSR disabled
+const PromptCard = dynamic(() => import('./PromptCard'), { ssr: false });
 
 const Feed = () => {
   const [searchText, setSearchText] = useState("");
   const [posts, setPosts] = useState([]);
 
-  const fetchPromptData = async (search = "") => {
+  async function fetchPromptData(search = '') {
     try {
       const res = await fetch(`/api/prompt?search=${search}`);
       const data = await res.json();
       setPosts(data);
     } catch (error) {
-      console.error("Error fetching data:", error);
+      console.error(error);
     }
+  }
+
+  const handleSearchChange = (e) => {
+    setSearchText(e.target.value);
+    fetchPromptData(e.target.value);
   };
 
   useEffect(() => {
     fetchPromptData();
   }, []);
-
-  const handleSearchChange = (e) => {
-    const search = e.target.value;
-    setSearchText(search);
-    fetchPromptData(search);
-  };
-
-  const handleTagClick = (tag) => {
-    fetchPromptData(tag);
-  };
-
-  // Function to refresh data after a prompt is updated or deleted
-  const refreshData = () => {
-    fetchPromptData(searchText);
-  };
 
   return (
     <section className="feed">
@@ -49,14 +42,12 @@ const Feed = () => {
           className="search_input peer"
         />
       </form>
-      <PromptCardList data={posts} handleTagClick={handleTagClick} refreshData={refreshData} />
+      <PromptCardList data={posts} handleTagClick={fetchPromptData} />
     </section>
   );
 };
 
-export default Feed;
-
-function PromptCardList({ data, handleTagClick, refreshData }) {
+function PromptCardList({ data, handleTagClick }) {
   return (
     <div className="mt-16 prompt_layout">
       {data.map((post) => (
@@ -64,9 +55,10 @@ function PromptCardList({ data, handleTagClick, refreshData }) {
           key={post._id}
           post={post}
           handleTagClick={handleTagClick}
-          refreshData={refreshData} // Pass refreshData down to PromptCard
         />
       ))}
     </div>
   );
 }
+
+export default Feed;
