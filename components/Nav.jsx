@@ -7,7 +7,6 @@ import { signIn, signOut, useSession, getProviders } from 'next-auth/react';
 
 const Nav = () => {
   const { data: session } = useSession();
-
   const [providers, setProviders] = useState(null);
   const [toggleDropdown, setToggleDropdown] = useState(false);
 
@@ -15,10 +14,14 @@ const Nav = () => {
     const setUpProviders = async () => {
       const response = await getProviders();
       setProviders(response);
-    }
-
+    };
     setUpProviders();
   }, []);
+
+  const handleSignOut = () => {
+    // Redirect to the homepage after signing out
+    signOut({ callbackUrl: '/' });
+  };
 
   return (
     <nav className='flex-between w-full mb-16 pt-3'>
@@ -34,7 +37,7 @@ const Nav = () => {
         <p className='logo_text'>Promptopia</p>
       </Link>
 
-    {/*Desktop Navigation*/}
+      {/* Desktop Navigation */}
       <div className='sm:flex hidden'>
         {session?.user ? (
           <div className='flex gap-3 md:gap-5'>
@@ -42,7 +45,7 @@ const Nav = () => {
               Create Post
             </Link>
 
-            <button type='button' onClick={signOut} className='outline_btn'>
+            <button type='button' onClick={handleSignOut} className='outline_btn'>
               Sign Out
             </button>
 
@@ -61,11 +64,8 @@ const Nav = () => {
             {providers &&
               Object.values(providers).map((provider) => (
                 <button
-                  type='button'
                   key={provider.name}
-                  onClick={() => {
-                    signIn(provider.id);
-                  }}
+                  onClick={() => signIn(provider.id)}
                   className='black_btn'
                 >
                   Sign In
@@ -75,7 +75,7 @@ const Nav = () => {
         )}
       </div>
 
-      {/* Mobile navigation*/}
+      {/* Mobile Navigation */}
       <div className='sm:hidden flex relative'>
         {session?.user ? (
           <div className='flex'>
@@ -106,14 +106,11 @@ const Nav = () => {
                 </Link>
                 <button
                   type='button'
-                  onClick={() =>  {
-                    setToggleDropdown(false);
-                    signOut();
-                  }}
+                  onClick={handleSignOut}
                   className='mt-5 w-full black_btn'
                 >
                   Sign Out
-                  </button>
+                </button>
               </div>
             )}
           </div>
@@ -124,8 +121,7 @@ const Nav = () => {
                 <button
                   type='button'
                   key={provider.name}
-                  onClick={() => {signIn(provider.id);
-                  }}
+                  onClick={() => signIn(provider.id)}
                   className='black_btn'
                 >
                   Sign In
@@ -137,6 +133,5 @@ const Nav = () => {
     </nav>
   );
 };
-
 
 export default Nav;
