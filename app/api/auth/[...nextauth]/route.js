@@ -1,8 +1,7 @@
 import NextAuth from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
-
-import User from "models/user";
-import { connectToDB } from "utils/database";
+import { connectToDB } from "@utils/database";
+import User from "@models/user";
 
 const handler = NextAuth({
   providers: [
@@ -11,23 +10,29 @@ const handler = NextAuth({
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
     async session({ session }) {
-      const sessionUser = await User.findOne({ email: session.user.email });
-      session.user.id = sessionUser._id.toString();
-
+      const sessionUser = await User.findOne({
+        email: session.user.email,
+      });
+      if (sessionUser?._id) {
+        session.user.id = sessionUser._id.toString();
+      }
       return session;
     },
-    async signIn({ user, account, profile, email, credentials }) {
+    async signIn({ profile }) {
+      // serverless functions:- only spins up the server and connects to it whenever api call made.
       try {
         await connectToDB();
-        const userExists = await User.findOne({ email: profile?.email });
-        // if not, create a new document and save user in MongoDB
-        if (userExists === null) {
+        // check if a user already exists
+        const userAlreadyExists = await User.findOne({ email: profile.email });
+        // if not create a new user
+        if (!userAlreadyExists) {
           await User.create({
-            email: profile?.email,
-            username: profile?.name.replace(/\s+/g, "").toLowerCase(),
-            image: user.image,
+            email: profile.email,
+            username: profile.name.replace(" ", "").toLowerCase(),
+            image: profile.picture,
           });
         }
 
