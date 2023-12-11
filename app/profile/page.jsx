@@ -1,59 +1,55 @@
 "use client"
+
 import { useState } from 'react';
 import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/router'; // Fixed import path
+import { useRouter } from 'next/navigation';
 
 import Form from '@components/Form';
 
 const CreatePrompt = () => {
   const router = useRouter();
   const { data: session } = useSession();
-
+  
   const [submitting, setSubmitting] = useState(false);
-  const [project, setProject] = useState({
-    title: '',
-    description: '',
-    image: '',
-    liveSiteUrl: '',
-    githubUrl: '',
-    category: ''
+  const [post, setPost] = useState({
+    prompt: '',
+    tag: '',
   });
 
-  const createProject = async (e) => {
+  const createPrompt = async (e) => {
     e.preventDefault();
     setSubmitting(true);
 
     try {
-      const response = await fetch('/api/project/new', { // Updated API endpoint
+      const response = await fetch('/api/prompt/new', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
         body: JSON.stringify({
-          ...project,
-          createdBy: session?.user.id  // Assuming session.user.id is the ID of the creator
+        prompt: post.prompt,
+        userId: session?.user.id,
+        tag: post.tag
         })
-      });
+      })
 
       if (response.ok) {
-        router.push('/'); // Redirect after successful creation
+        router.push('/');
       }
     } catch (error) {
-      console.error(error);
-    } finally {
-      setSubmitting(false);
-    }
-  };
+    console.log(error);
+  } finally {
+    setSubmitting(false);
+  }
+
+  }
 
   return (
     <Form
-      type="Create Project"
-      post={project}
-      setPost={setProject}
-      submitting={submitting}
-      handleSubmit={createProject}
+    type="Create"
+    post={post}
+    setPost={setPost}
+    submitting={submitting}
+    handleSubmit={createPrompt}
     />
   );
 };
 
-export default CreatePrompt;
+export default CreatePrompt
