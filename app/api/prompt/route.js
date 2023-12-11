@@ -7,7 +7,8 @@ export const GET = async (request, { params }) => {
     try {
         await connectToDB();
 
-        const prompts = await Prompt.find({}).populate('creator');
+        // Fetch all prompts and populate the 'createdBy' field
+        const prompts = await Prompt.find({}).populate('createdBy');
         return new Response(JSON.stringify(prompts), { status: 200 });
     } catch (error) {
         console.error("Error in GET /api/prompt:", error); // Log the error for debugging

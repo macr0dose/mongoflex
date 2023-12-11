@@ -12,33 +12,35 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session }) {
-      const sessionUser = await User.findOne({
-        email: session.user.email,
-      });
-      if (sessionUser?._id) {
-        session.user.id = sessionUser._id.toString();
+    async session({ session, user }) {
+      // Use the user ID from the database, not just the email
+      if (user && user._id) {
+        session.user.id = user._id.toString();
       }
       return session;
     },
-    async signIn({ profile }) {
-      // serverless functions:- only spins up the server and connects to it whenever api call made.
+    async signIn({ account, profile }) {
       try {
         await connectToDB();
-        // check if a user already exists
-        const userAlreadyExists = await User.findOne({ email: profile.email });
-        // if not create a new user
-        if (!userAlreadyExists) {
+        const existingUser = await User.findOne({ email: profile.email });
+
+        if (!existingUser) {
           await User.create({
+            name: profile.name, // Assuming 'name' is the correct field
             email: profile.email,
-            username: profile.name.replace(" ", "").toLowerCase(),
-            image: profile.picture,
+            avatarUrl: profile.picture, // Assuming 'avatarUrl' is the correct field
+            // Set default values for other fields
+            description: '',
+            githubUrl: '',
+            linkedInUrl: '',
+            // prompts array will be empty initially
+            prompts: []
           });
         }
 
         return true;
       } catch (error) {
-        console.log(error);
+        console.error('Error in signIn callback:', error);
         return false;
       }
     },

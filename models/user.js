@@ -5,7 +5,8 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Name is required!'],
     minlength: [2, 'Name should be at least 2 characters long'],
-    maxlength: [100, 'Name should not exceed 100 characters']
+    maxlength: [100, 'Name should not exceed 100 characters'],
+    match: [/^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[\w.]+(?<![_.])$/, 'Username invalid, it should contain 8-20 alphanumeric letters and be unique!']
   },
   email: {
     type: String,
@@ -29,10 +30,13 @@ const UserSchema = new Schema({
     type: String, // URL validation can be added separately if needed
     default: ''
   },
-  // Assuming 'projects' is an array of Project IDs
-  projects: [{
+  image: {
+    type: String,
+  },
+  // Assuming 'prompts' is an array of Prompt IDs
+  prompts: [{
     type: Schema.Types.ObjectId,
-    ref: 'Project'
+    ref: 'Prompt' // Changed 'Prompts' to 'Prompt' to match the model name
   }]
 });
 

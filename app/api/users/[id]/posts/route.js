@@ -5,12 +5,12 @@ export const GET = async (request, { params }) => {
     try {
         await connectToDB();
 
-        const prompts = await Prompt.find({
-            creator: params.id
-        }).populate('creator');
+        // Fetch prompts created by the user with the given ID
+        const prompts = await Prompt.find({ createdBy: params.id }).populate('createdBy');
 
-        return new Response(JSON.stringify(prompts), { status: 200 })
-        } catch (error) {
-            return new Response('Failed to fetch all prompts', { status: 500 })
+        return new Response(JSON.stringify(prompts), { status: 200 });
+    } catch (error) {
+        console.error("Error in GET /api/users/[id]/posts:", error); // Log the error for debugging
+        return new Response(`Failed to fetch prompts: ${error.message}`, { status: 500 });
     }
-}
+};

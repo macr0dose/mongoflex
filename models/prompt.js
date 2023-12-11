@@ -1,6 +1,6 @@
 import { Schema, model, models } from 'mongoose';
 
-const ProjectSchema = new Schema({
+const PromptSchema = new Schema({
   title: {
     type: String,
     required: [true, 'Title is required!'],
@@ -28,6 +28,6 @@ const ProjectSchema = new Schema({
 });
 
 // If a Project model has already been registered, use that, otherwise create a new one
-const Project = models.Project || model("Project", ProjectSchema);
+const Prompt = models.Prompt || model("Prompt", PromptSchema);
 
-export default Project;
+export default Prompt;
