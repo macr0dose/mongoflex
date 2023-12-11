@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/router"; // Corrected import path
+import { useRouter } from "next/navigation"; // Corrected import path
 
 import Profile from "@components/Profile";
 
