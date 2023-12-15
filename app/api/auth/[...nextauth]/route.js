@@ -12,12 +12,23 @@ const handler = NextAuth({
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, user }) {
-      // Use the user ID from the database, not just the email
-      if (user && user._id) {
-        session.user.id = user._id.toString();
+    async session({ session, token }) {
+      try {
+        await connectToDB();
+        const userFromDB = await User.findOne({ email: session.user.email });
+
+        if (userFromDB) {
+          // Assuming the user ID is stored under '_id' in MongoDB
+          session.user.id = userFromDB._id.toString();
+        } else {
+          console.error("User not found in DB");
+        }
+
+        return session;
+      } catch (error) {
+        console.error("Error in session callback:", error);
+        return session;
       }
-      return session;
     },
     async signIn({ account, profile }) {
       try {
@@ -26,21 +37,15 @@ const handler = NextAuth({
 
         if (!existingUser) {
           await User.create({
-            name: profile.name, // Assuming 'name' is the correct field
+            name: profile.name,
             email: profile.email,
-            avatarUrl: profile.picture, // Assuming 'avatarUrl' is the correct field
-            // Set default values for other fields
-            description: '',
-            githubUrl: '',
-            linkedInUrl: '',
-            // prompts array will be empty initially
-            prompts: []
+            avatarUrl: profile.picture,
           });
         }
 
         return true;
       } catch (error) {
-        console.error('Error in signIn callback:', error);
+        console.error("Error in signIn callback:", error);
         return false;
       }
     },

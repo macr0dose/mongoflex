@@ -12,7 +12,7 @@ const PromptSchema = new Schema({
   },
   image: {
     type: String,
-    required: [true, 'Image URL is required!']
+    // required: [true, 'Image URL is required!']
   },
   liveSiteUrl: String,
   githubUrl: String,
@@ -20,7 +20,7 @@ const PromptSchema = new Schema({
     type: String,
     required: [true, 'Category is required!']
   },
-  createdBy: {
+  creator: {
     type: Schema.Types.ObjectId,
     ref: 'User',
     required: [true, 'Creator is required!']

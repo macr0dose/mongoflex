@@ -1,16 +1,18 @@
-import { connectToDB } from '@utils/database';
-import Prompt from '@models/prompt';
+import Prompt from "@models/prompt";
+import { connectToDB } from "@utils/database";
 
 export const GET = async (request, { params }) => {
-    try {
-        await connectToDB();
+  try {
+    await connectToDB();
 
-        // Fetch prompts created by the user with the given ID
-        const prompts = await Prompt.find({ createdBy: params.id }).populate('createdBy');
+    const prompts = await Prompt.find({ creator: params.id }).populate(
+      "creator"
+    );
 
-        return new Response(JSON.stringify(prompts), { status: 200 });
-    } catch (error) {
-        console.error("Error in GET /api/users/[id]/posts:", error); // Log the error for debugging
-        return new Response(`Failed to fetch prompts: ${error.message}`, { status: 500 });
-    }
+    return new Response(JSON.stringify(prompts), { status: 200 });
+  } catch (error) {
+    return new Response("Failed to fetch prompts created by user", {
+      status: 500,
+    });
+  }
 };
