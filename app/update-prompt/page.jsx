@@ -70,7 +70,6 @@ const UpdatePrompt = () => {
     }
   };
   
-
   const updatePrompt = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -78,10 +77,10 @@ const UpdatePrompt = () => {
     if (post.image && typeof post.image === "object") {
       const imageData = new FormData();
       imageData.append("file", post.image);
-      imageData.append("upload_preset", "esal5vff"); // Replace with your Cloudinary upload preset
+      imageData.append("upload_preset", `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`);
   
       try {
-        const response = await fetch("https://api.cloudinary.com/v1_1/dknukirho/image/upload", {
+        const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`, {
           method: "POST",
           body: imageData,
         });
