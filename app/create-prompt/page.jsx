@@ -23,7 +23,7 @@ const CreatePrompt = () => {
   const uploadImage = async (file) => {
     const formData = new FormData();
     formData.append("file", file);
-    formData.append("upload_preset", "esal5vff");
+    formData.append("upload_preset", `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`);
 
     try {
       const response = await fetch(
@@ -35,7 +35,7 @@ const CreatePrompt = () => {
       return data.secure_url;
     } catch (error) {
       console.error("Failed to upload image", error);
-      throw error; // Throw error to be caught in the calling function
+      throw error; 
     }
   };
 
