@@ -47,11 +47,6 @@ const UpdatePrompt = () => {
     getPromptDetails();
   }, [promptId]);
 
-  const handleImageChange = (newImage) => {
-    setPost({ ...post, image: newImage });
-    setImageChanged(true);
-  };
-
   const uploadImage = async () => {
     const formData = new FormData();
     formData.append("file", post.image);
@@ -65,7 +60,7 @@ const UpdatePrompt = () => {
 
       const data = await response.json();
       if (data.secure_url) {
-        return data.secure_url, setPost({ ...post, image: data.secure_url }); // Update post state with image URL
+        setPost({ ...post, image: data.secure_url }); // Update post state with image URL
       } else {
         throw new Error("Image upload failed");
       }
@@ -74,15 +69,43 @@ const UpdatePrompt = () => {
       setIsSubmitting(false); // Stop submitting if the image upload fails
     }
   };
+  
 
   const updatePrompt = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
   
     if (post.image && typeof post.image === "object") {
-      await uploadImage(); // Upload image if it's a file object
-    }
+      const imageData = new FormData();
+      imageData.append("file", post.image);
+      imageData.append("upload_preset", "esal5vff"); // Replace with your Cloudinary upload preset
   
+      try {
+        const response = await fetch("https://api.cloudinary.com/v1_1/dknukirho/image/upload", {
+          method: "POST",
+          body: imageData,
+        });
+  
+        if (!response.ok) {
+          const errorData = await response.text();
+          console.error("Failed to upload image to Cloudinary:", errorData);
+          throw new Error(errorData);
+        }
+  
+        const responseData = await response.json();
+        const imageUrl = responseData.secure_url;
+  
+        sendUpdateRequest(imageUrl);
+      } catch (error) {
+        console.error("Error in uploading image to Cloudinary:", error);
+        setIsSubmitting(false);
+      }
+    } else {
+      sendUpdateRequest(post.image);
+    }
+  };
+  
+  const sendUpdateRequest = async (updatedImage) => {
     try {
       const response = await fetch(`/api/prompt/${promptId}`, {
         method: "PATCH",
@@ -91,27 +114,23 @@ const UpdatePrompt = () => {
         },
         body: JSON.stringify({
           ...post,
-          image: post.image, // Replace imageUrl with post.image
+          image: updatedImage,
         }),
       });
   
-      // Check if the response is ok
       if (!response.ok) {
-        // Handle non-200 responses
         const errorData = await response.text();
         console.error("Failed to update prompt:", errorData);
         throw new Error(errorData);
       }
   
-      // Optionally parse JSON only if response is not empty
       const responseData = response.headers.get("content-length") > 0 ? await response.json() : null;
       console.log("Update successful:", responseData);
   
       router.push("/");
+      setIsSubmitting(false);
     } catch (error) {
       console.error("Error in updating prompt:", error);
-    } finally {
-      setIsSubmitting(false);
     }
   };
 

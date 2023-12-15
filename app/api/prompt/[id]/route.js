@@ -17,31 +17,35 @@ export const GET = async (request, { params }) => {
 
 // PATCH (update)
 export const PATCH = async (request, { params }) => {
-    const { title, description, image, liveSiteUrl, githubUrl, category } = await request.json();
+  try {
+    await connectToDB();
+    const { title, description, image, liveSiteUrl, githubUrl, category } =
+      await request.json();
 
-    try {
-        await connectToDB();
-
-        const existingPrompt = await Prompt.findById(params.id);
-        if (!existingPrompt) {
-            return new Response('Prompt not found', { status: 404 });
-        }
-
-        // Update fields
-        existingPrompt.title = title || existingPrompt.title;
-        existingPrompt.description = description || existingPrompt.description;
-        existingPrompt.image = image || existingPrompt.image;
-        existingPrompt.liveSiteUrl = liveSiteUrl || existingPrompt.liveSiteUrl;
-        existingPrompt.githubUrl = githubUrl || existingPrompt.githubUrl;
-        existingPrompt.category = category || existingPrompt.category;
-
-        await existingPrompt.save();
-
-        return new Response(JSON.stringify({ message: "Successfully updated the prompt" }), { status: 200, headers: { 'Content-Type': 'application/json' } });
-    } catch (error) {
-        console.error('Error updating prompt:', error);
-        return new Response(JSON.stringify({ message: 'Failed to update prompt' }), { status: 500, headers: { 'Content-Type': 'application/json' } });
+    const existingPrompt = await Prompt.findById(params.id);
+    if (!existingPrompt) {
+      return new Response("Prompt not found", { status: 404 });
     }
+    existingPrompt.title = title || existingPrompt.title;
+    existingPrompt.description = description || existingPrompt.description;
+    existingPrompt.image = image || existingPrompt.image;
+    existingPrompt.liveSiteUrl = liveSiteUrl || existingPrompt.liveSiteUrl;
+    existingPrompt.githubUrl = githubUrl || existingPrompt.githubUrl;
+    existingPrompt.category = category || existingPrompt.category;
+
+    await existingPrompt.save();
+
+    return new Response(
+      JSON.stringify({ message: "Successfully updated the prompt" }),
+      { status: 200, headers: { "Content-Type": "application/json" } }
+    );
+  } catch (error) {
+    console.error("Error updating prompt:", error);
+    return new Response(
+      JSON.stringify({ message: "Failed to update prompt" }),
+      { status: 500, headers: { "Content-Type": "application/json" } }
+    );
+  }
 };
 
 // DELETE (remove)

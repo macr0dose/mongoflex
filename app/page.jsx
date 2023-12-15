@@ -5,9 +5,9 @@ const Home = () => {
         <section className="w-full flex-center flex-col">
             <h1 className="head_text text-center" >
 
-                Flexibble
+                Flexibble 2.0
                 <br className="max-md:hidden" />
-                <span className="orange_gradient text-center"> AI-powered Prompts </span>
+                <span className="orange_gradient text-center"> Discover top developer projects </span>
             </h1>
             <p className="desc text-center">
                 Flexibble placeholder text
