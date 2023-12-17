@@ -137,16 +137,16 @@ body {
 }
 
 .search_input {
-  @apply block w-full rounded-md border border-slate-200 bg-white py-2.5  pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply w-full text-center text-sm font-medium border border-slate-200 bg-white rounded-md shadow-lg p-2 focus:border-black focus:outline-none focus:ring-0;
 }
 
 .copy_   {
   @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
 }
 
-/* .glassmorphism {
+.glassmorphism {
   @apply rounded-xl border border-slate-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-5;
-} */
+}
 
 .project_layout {
   @apply py-8 sm:columns-2 sm:gap-6 xl:columns-3;
@@ -172,7 +172,7 @@ body {
 }
 
 .dropdown {
-  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg bg-white min-w-[210px] flex flex-col gap-2 justify-end items-end;
+  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg min-w-[210px] flex flex-col gap-2 justify-end items-end glassmorphism;
 }
 
 .dropdown_link {
@@ -181,7 +181,7 @@ body {
 
 /* ProjectCard Component */
 .project_card {
-  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4 md:w-[360px] w-full h-fit ;
+  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4  w-full h-fit ;
 }
 
 .flex-center {

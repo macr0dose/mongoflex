@@ -68,21 +68,21 @@ const Feed = () => {
 
   return (
     <section className="feed">
-      <div className="relative w-1/2 flex items-center">
-        {/* Search Icon */}
-        <img 
-          src="/assets/icons/search.svg" // Replace with your image path
+      <div className="relative w-full md:w-1/2 flex items-center pb-2">
+        <img
+          src="/assets/icons/search.svg"
           alt="Search"
-          className="absolute left-3 h-10 w-10" // Adjust size as needed
+          width={40}
+          height={40}
+          className="absolute"
         />
-        {/* Search Input */}
         <input
           type="text"
           placeholder="Search by title, description, or category"
           value={searchText}
           onChange={handleSearchChange}
           required
-          className="search_input peer text-center pl-10 w-full"
+          className="search_input"
         />
       </div>
       <div className="w-full">

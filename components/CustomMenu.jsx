@@ -67,7 +67,7 @@ const CustomMenu = ({ title, state, setState }) => {
                       <button
                         type="button"
                         value={category}
-                        className={`custom_menu-item ${
+                        className={`custom_menu-item  ${
                           active ? " text-primary-orange" : ""
                         }`}
                         onClick={(e) => onItemClick(e.currentTarget.value)}

@@ -41,38 +41,44 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
           <Image
             src={post.image}
             alt={post.title}
-            width={250}
-            height={200}
-            className="rounded-lg object-cover"
+            width={350}
+            height={300}
+            className="rounded-lg"
           />
         </div>
       )}
 
       {/* User Avatar and Info */}
-      <div className="flex gap-3 items-center mt-3 group">
-        <div className="cursor-pointer" onClick={handleProfileClick}>
-          <Image
-            src={post.creator.avatarUrl}
-            alt="user_image"
-            width={30}
-            height={30}
-            className="rounded-full object-cover"
-          />
+      <div className="flex justify-between items-center mt-3">
+        <div className="flex gap-3 items-center group">
+          <div className="cursor-pointer" onClick={handleProfileClick}>
+            <Image
+              src={post.creator.avatarUrl}
+              alt="user_image"
+              width={30}
+              height={30}
+              className="rounded-full object-cover"
+            />
+          </div>
+          <h3 className="font-semibold text-sm">{post.creator.name}</h3>
         </div>
-        <div className=" mt-2">
-          <span className="mr-2">{randomLikes} Likes</span>
-          <span>{randomViews} Views</span>
-        </div>
+
+        {/* Likes and Views */}
+        {/* <div className="text-xs text-right">
+          <div>{randomLikes} Likes</div>
+          <div>{randomViews} Views</div>
+        </div> */}
+        <div className="flexCenter gap-2">
+            <Image src="/assets/images/heart.svg" width={13} height={12} alt="heart" />
+            <p className="text-sm">{randomLikes}</p>
+            <Image src="/assets/images/eye.svg" width={13} height={12} alt="heart" />
+            <p className="text-sm">{randomViews}</p>
+          </div>
       </div>
 
-      <h3 className="font-semibold text-sm">{post.creator.name}</h3>
-      <p className="my-4 text-sm text-gray-700">{post.project}</p>
-      <div className="hidden group-hover:flex profile_card-title">
-        <p className="w-full">{post.title}</p>
-      </div>
       {/* Edit and Delete Options for User's Own Posts */}
       {isOwnPost && pathName.includes("/profile") && (
-        <div className="mt-5 flex-center gap-4 border-t border-gray-100 p-3 ">
+        <div className="mt-3 flex-center gap-4 border-t border-gray-100 p-3 ">
           <p
             className="text-lg green_gradient cursor-pointer border-r border-black pr-4"
             onClick={handleEdit}
@@ -80,7 +86,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             Edit
           </p>
           <p
-            className="text-lg orange_gradient cursor-pointer"
+            className="text-lg  text-red-500 cursor-pointer"
             onClick={handleDelete}
           >
             Delete
