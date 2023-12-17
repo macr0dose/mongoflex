@@ -1,17 +1,17 @@
 import { connectToDB } from "@utils/database";
-import Prompt from "@models/prompt";
+import Project from "@models/project";
 
 //GET (read)
 export const GET = async (request, { params }) => {
   try {
     await connectToDB();
 
-    const prompt = await Prompt.findById(params.id).populate("creator");
-    if (!prompt) return new Response("Prompt not found", { status: 404 });
+    const project = await Project.findById(params.id).populate("creator");
+    if (!project) return new Response("Project not found", { status: 404 });
 
-    return new Response(JSON.stringify(prompt), { status: 200 });
+    return new Response(JSON.stringify(project), { status: 200 });
   } catch (error) {
-    return new Response("Failed to fetch all prompts", { status: 500 });
+    return new Response("Failed to fetch all projects", { status: 500 });
   }
 };
 
@@ -22,9 +22,9 @@ export const PATCH = async (request, { params }) => {
     const { title, description, image, liveSiteUrl, githubUrl, category } =
       await request.json();
 
-    const existingPrompt = await Prompt.findById(params.id);
+    const existingPrompt = await Project.findById(params.id);
     if (!existingPrompt) {
-      return new Response("Prompt not found", { status: 404 });
+      return new Response("Project not found", { status: 404 });
     }
     existingPrompt.title = title || existingPrompt.title;
     existingPrompt.description = description || existingPrompt.description;
@@ -36,13 +36,13 @@ export const PATCH = async (request, { params }) => {
     await existingPrompt.save();
 
     return new Response(
-      JSON.stringify({ message: "Successfully updated the prompt" }),
+      JSON.stringify({ message: "Successfully updated the project" }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (error) {
-    console.error("Error updating prompt:", error);
+    console.error("Error updating project:", error);
     return new Response(
-      JSON.stringify({ message: "Failed to update prompt" }),
+      JSON.stringify({ message: "Failed to update project" }),
       { status: 500, headers: { "Content-Type": "application/json" } }
     );
   }
@@ -53,10 +53,10 @@ export const DELETE = async (request, { params }) => {
   try {
     await connectToDB();
 
-    await Prompt.findByIdAndRemove(params.id);
+    await Project.findByIdAndRemove(params.id);
 
-    return new Response("Prompt deleted successfully", { status: 200 });
+    return new Response("Project deleted successfully", { status: 200 });
   } catch (error) {
-    return new Response("Failed to delete prompt", { status: 500 });
+    return new Response("Failed to delete project", { status: 500 });
   }
 };

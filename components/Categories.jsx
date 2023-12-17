@@ -1,36 +1,30 @@
-"use client";
+"use client"
+import React, { useState } from "react";
+import { categoryFilters } from "@/constants/index"; // Adjust the path as needed
 
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+const Categories = ({ handleTagClick }) => {
+  const [selectedCategory, setSelectedCategory] = useState("");
 
-import { categoryFilters } from "@/constants";
-
-const Categories = () => {
-  const router = useRouter();
-  const pathName = usePathname();
-  const searchParams = useSearchParams();
-
-  const category = searchParams.get("category");
-
-  const handleTags = (filter) => {
-    router.push(`${pathName}?category=${filter}`);
+  const handleClick = (category) => {
+    setSelectedCategory(category);
+    handleTagClick(category);
   };
 
   return (
     <div className="flexBetween w-full gap-5 flex-wrap">
       <ul className="flex gap-2 overflow-auto">
-        {categoryFilters.map((filter) => (
-          <button
-            key={filter}
-            type="button"
-            onClick={() => handleTags(filter)}
-            className={`${
-              category === filter
-                ? "bg-light-white-300 font-medium"
-                : "font-normal"
-            } px-4 py-3 rounded-lg capitalize whitespace-nowrap`}
-          >
-            {filter}
-          </button>
+        {categoryFilters.map((category) => (
+          <li key={category}>
+            <button
+              type="button"
+              onClick={() => handleClick(category)}
+              className={`px-4 py-2 mb-2 rounded-lg capitalize whitespace-nowrap ${
+                category === selectedCategory ? "bg-purple-500 text-white" : ""
+              }`} // Add highlighting styles for the selected category
+            >
+              {category}
+            </button>
+          </li>
         ))}
       </ul>
     </div>

@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 
-import PromptCard from "./PromptCard";
+import ProjectCard from "./ProjectCard";
+import Categories from "./Categories";
 
-const PromptCardList = ({ data, handleTagClick }) => {
+const ProjectCardList = ({ data, handleTagClick }) => {
   return (
-    <div className='mt-16 prompt_layout'>
+    <div className="project_layout">
       {data.map((post) => (
-        <PromptCard
+        <ProjectCard
           key={post._id}
           post={post}
           handleTagClick={handleTagClick}
@@ -26,7 +27,7 @@ const Feed = () => {
   const [searchedResults, setSearchedResults] = useState([]);
 
   const fetchPosts = async () => {
-    const response = await fetch("/api/prompt");
+    const response = await fetch("/api/project");
     const data = await response.json();
 
     setAllPosts(data);
@@ -66,25 +67,34 @@ const Feed = () => {
   };
 
   return (
-    <section className='feed'>
-      <form className='relative w-full flex-center'>
+    <section className="feed">
+      <div className="relative w-1/2 flex items-center">
+        {/* Search Icon */}
+        <img 
+          src="/assets/icons/search.svg" // Replace with your image path
+          alt="Search"
+          className="absolute left-3 h-10 w-10" // Adjust size as needed
+        />
+        {/* Search Input */}
         <input
-          type='text'
-          placeholder='Search by title, description, or category'
+          type="text"
+          placeholder="Search by title, description, or category"
           value={searchText}
           onChange={handleSearchChange}
           required
-          className='search_input peer'
+          className="search_input peer text-center pl-10 w-full"
         />
-      </form>
-
+      </div>
+      <div className="w-full">
+        <Categories allPosts={allPosts} handleTagClick={handleTagClick} />
+      </div>
       {searchText ? (
-        <PromptCardList
+        <ProjectCardList
           data={searchedResults}
           handleTagClick={handleTagClick}
         />
       ) : (
-        <PromptCardList data={allPosts} handleTagClick={handleTagClick} />
+        <ProjectCardList data={allPosts} handleTagClick={handleTagClick} />
       )}
     </section>
   );

@@ -50,7 +50,7 @@ const CreatePrompt = () => {
         post.image = imageUrl; // Update image in the post object with the URL
       }
 
-      const response = await fetch("/api/prompt/new", {
+      const response = await fetch("/api/project/new", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(post),
@@ -62,7 +62,7 @@ const CreatePrompt = () => {
         console.log("Error response:", await response.json());
       }
     } catch (error) {
-      console.error("Error creating prompt:", error);
+      console.error("Error creating project:", error);
     } finally {
       setSubmitting(false);
     }

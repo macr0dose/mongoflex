@@ -25,21 +25,14 @@ const UpdatePrompt = () => {
     const getPromptDetails = async () => {
       if (promptId) {
         try {
-          const response = await fetch(`/api/prompt/${promptId}`);
+          const response = await fetch(`/api/project/${promptId}`);
           if (!response.ok) {
-            throw new Error("Failed to fetch prompt details");
+            throw new Error("Failed to fetch project details");
           }
           const data = await response.json();
-          setPost({
-            title: data.title,
-            description: data.description,
-            image: data.image,
-            liveSiteUrl: data.liveSiteUrl,
-            githubUrl: data.githubUrl,
-            category: data.category,
-          });
+          setPost(data);
         } catch (error) {
-          console.error("Error fetching prompt details:", error);
+          console.error("Error fetching project details:", error);
         }
       }
     };
@@ -69,31 +62,31 @@ const UpdatePrompt = () => {
       setIsSubmitting(false); // Stop submitting if the image upload fails
     }
   };
-  
+
   const updatePrompt = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
-  
+
     if (post.image && typeof post.image === "object") {
       const imageData = new FormData();
       imageData.append("file", post.image);
       imageData.append("upload_preset", `${process.env.NEXT_PUBLIC_CLOUDINARY_PRESET}`);
-  
+
       try {
         const response = await fetch(`https://api.cloudinary.com/v1_1/${process.env.NEXT_PUBLIC_CLOUDINARY_NAME}/image/upload`, {
           method: "POST",
           body: imageData,
         });
-  
+
         if (!response.ok) {
           const errorData = await response.text();
           console.error("Failed to upload image to Cloudinary:", errorData);
           throw new Error(errorData);
         }
-  
+
         const responseData = await response.json();
         const imageUrl = responseData.secure_url;
-  
+
         sendUpdateRequest(imageUrl);
       } catch (error) {
         console.error("Error in uploading image to Cloudinary:", error);
@@ -104,9 +97,10 @@ const UpdatePrompt = () => {
     }
   };
   
+
   const sendUpdateRequest = async (updatedImage) => {
     try {
-      const response = await fetch(`/api/prompt/${promptId}`, {
+      const response = await fetch(`/api/project/${promptId}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
@@ -116,22 +110,24 @@ const UpdatePrompt = () => {
           image: updatedImage,
         }),
       });
-  
+
       if (!response.ok) {
         const errorData = await response.text();
-        console.error("Failed to update prompt:", errorData);
+        console.error("Failed to update project:", errorData);
         throw new Error(errorData);
       }
-  
+
       const responseData = response.headers.get("content-length") > 0 ? await response.json() : null;
-      console.log("Update successful:", responseData);
-  
+      console.log("Update successful:",);
+
       router.push("/");
       setIsSubmitting(false);
     } catch (error) {
-      console.error("Error in updating prompt:", error);
+      console.error("Error in updating project:", error);
     }
   };
+
+  
 
   return (
     <Form

@@ -24,7 +24,7 @@ const Nav = () => {
   };
 
   return (
-    <nav className='flex-between w-full mb-16 pt-3'>
+    <nav className='flexBetween w-full pt-3 pb-2 border-b border-slate-400'>
       <Link href='/' className='flex gap-2 flex-center'>
         <Image
           src='/assets/images/logo.svg'
@@ -34,15 +34,15 @@ const Nav = () => {
           className='object-contain'
           loading="eager"
         />
-        {/* <p className='logo_text'>Flexibble</p> */}
       </Link>
+        <p className='logo_text pl-20'>Login with Demo Account</p>
 
       {/* Desktop Navigation */}
       <div className='sm:flex hidden'>
         {session?.user ? (
           <div className='flex gap-3 md:gap-5'>
-            <Link href='/create-prompt' className='black_btn'>
-              Create Post
+            <Link href='/create-project' className='black_btn'>
+             Share work
             </Link>
 
             <button type='button' onClick={handleSignOut} className='outline_btn'>
@@ -89,7 +89,7 @@ const Nav = () => {
             />
 
             {toggleDropdown && (
-              <div className='dropdown'>
+              <div className='dropdown z-20 bg-slate-50'>
                 <Link
                   href='/profile'
                   className='dropdown_link'
@@ -98,11 +98,11 @@ const Nav = () => {
                   My Profile
                 </Link>
                 <Link
-                  href='/create-prompt'
+                  href='/create-project'
                   className='dropdown_link'
                   onClick={() => setToggleDropdown(false)}
                 >
-                  Create Prompt
+                  Create Project
                 </Link>
                 <button
                   type='button'

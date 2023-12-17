@@ -4,10 +4,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* 
-  Note: The styles for this gradient grid background is heavily inspired by the creator of this amazing site (https://dub.sh) – all credits go to them! 
-*/
-
 @font-face {
   font-family: "Inter";
   src: url("/fonts/Inter-Regular.woff2") format("woff2"),
@@ -31,7 +27,7 @@ body {
   font-weight: 400;
 }
 
-.main {
+/* .main {
   width: 100vw;
   min-height: 100vh;
   position: fixed;
@@ -39,9 +35,9 @@ body {
   justify-content: center;
   padding: 120px 24px 160px 24px;
   pointer-events: none;
-}
+} */
 
-.main:before {
+/* .main:before {
   background: radial-gradient(circle, rgba(2, 0, 36, 0) 0, #fafafa 100%);
   position: absolute;
   content: "";
@@ -49,9 +45,9 @@ body {
   width: 100%;
   height: 100%;
   top: 0;
-}
+} */
 
-.main:after {
+/* .main:after {
   content: "";
   background-image: url("/assets/images/grid.svg");
   z-index: 1;
@@ -61,9 +57,9 @@ body {
   top: 0;
   opacity: 0.4;
   filter: invert(1);
-}
+} */
 
-.gradient {
+/* .gradient {
   height: fit-content;
   z-index: 3;
   width: 100%;
@@ -86,7 +82,7 @@ body {
   filter: blur(100px) saturate(150%);
   top: 80px;
   opacity: 0.15;
-}
+} */
 
 @media screen and (max-width: 640px) {
   .main {
@@ -96,16 +92,28 @@ body {
 
 /* Tailwind Styles */
 
+.flexCenter {
+  @apply flex justify-center items-center;
+}
+
+.flexBetween {
+  @apply flex justify-between items-center;
+}
+
+.flexStart {
+  @apply flex items-center justify-start;
+}
+
 .app {
   @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
 }
 
 .black_btn {
-  @apply rounded-full border border-black bg-black py-1.5 px-5 text-white transition-all hover:bg-white hover:text-black text-center text-sm flex items-center justify-center;
+  @apply rounded-full border border-primary-purple bg-primary-purple py-1.5 px-5 text-white transition-all hover:bg-primary-orange hover:text-white text-center text-sm flex items-center justify-center;
 }
 
 .outline_btn {
-  @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-black hover:text-white text-center text-sm flex items-center justify-center;
+  @apply rounded-full border border-black bg-transparent py-1.5 px-5 text-black transition-all hover:bg-primary-purple hover:text-white text-center text-sm flex items-center justify-center;
 }
 
 .head_text {
@@ -125,37 +133,37 @@ body {
 }
 
 .desc {
-  @apply mt-5 text-lg text-gray-600 sm:text-xl max-w-2xl;
+  @apply mt-5 text-lg text-slate-600 sm:text-xl max-w-2xl;
 }
 
 .search_input {
-  @apply block w-full rounded-md border border-gray-200 bg-white py-2.5  pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
+  @apply block w-full rounded-md border border-slate-200 bg-white py-2.5  pl-5 pr-12 text-sm shadow-lg font-medium focus:border-black focus:outline-none focus:ring-0;
 }
 
-.copy_btn {
+.copy_   {
   @apply w-7 h-7 rounded-full bg-white/10 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur flex justify-center items-center cursor-pointer;
 }
 
-.glassmorphism {
-  @apply rounded-xl border border-gray-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-5;
-}
+/* .glassmorphism {
+  @apply rounded-xl border border-slate-200 bg-white/20 shadow-[inset_10px_-50px_94px_0_rgb(199,199,199,0.2)] backdrop-blur p-5;
+} */
 
-.prompt_layout {
-  @apply space-y-6 py-8 sm:columns-2 sm:gap-6 xl:columns-3;
+.project_layout {
+  @apply flex-1 space-y-6 sm:columns-2 sm:gap-6 md:columns-2 lg:columns-3 w-full;
 }
 
 /* Feed Component */
 .feed {
-  @apply mt-16 mx-auto w-full max-w-xl flex justify-center items-center flex-col gap-2;
+  @apply mt-8 mx-auto w-full flex justify-center items-center flex-col gap-2;
 }
 
 /* Form Component */
 .form_textarea {
-  @apply w-full flex rounded-lg h-[200px] mt-2 p-3 text-sm text-gray-500 outline-0;
+  @apply w-full flex rounded-lg h-[100px] mt-2 p-3 text-sm outline-0 bg-slate-50;
 }
 
 .form_input {
-  @apply w-full flex rounded-lg mt-2 p-3 text-sm text-gray-500 outline-0;
+  @apply w-full flex rounded-lg mt-2 p-3 text-sm outline-0 bg-slate-50;
 }
 
 /* Nav Component */
@@ -168,12 +176,12 @@ body {
 }
 
 .dropdown_link {
-  @apply text-sm text-gray-700 hover:text-gray-500 font-medium;
+  @apply text-sm text-slate-700 hover:text-slate-500 font-medium;
 }
 
-/* PromptCard Component */
-.prompt_card {
-  @apply flex-1 break-inside-avoid rounded-lg border border-gray-300 bg-white/20 bg-clip-padding p-6 pb-4 backdrop-blur-lg backdrop-filter md:w-[360px] w-full h-fit;
+/* ProjectCard Component */
+.project_card {
+  @apply break-inside-avoid rounded-lg p-6 pb-4 md:w-[360px] w-full h-fit;
 }
 
 .flex-center {
@@ -190,4 +198,143 @@ body {
 
 .flex-between {
   @apply flex justify-between items-center;
+}
+
+
+
+
+ /*flexibble styles */
+.paddings {
+  @apply lg:px-20 py-6 px-5;
+}
+
+::-webkit-scrollbar {
+  width: 5px;
+  height: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 12px;
+}
+
+.modal-head-text {
+  @apply md:text-5xl text-3xl font-extrabold text-left max-w-5xl w-full;
+}
+
+.no-result-text {
+  @apply w-full text-center my-10 px-2;
+}
+
+/* Project Details */
+.user-actions_section {
+  @apply fixed max-md:hidden flex gap-4 flex-col right-10 top-20;
+}
+
+.user-info {
+  @apply flex flex-wrap whitespace-nowrap text-sm font-normal gap-2 w-full;
+}
+
+/* Home */
+.projects-grid {
+  @apply grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 mt-10 w-full;
+}
+
+/* Project Actions */
+.edit-action_btn {
+  @apply p-3 text-slate-100 bg-white rounded-lg text-sm font-medium;
+}
+
+.delete-action_btn {
+  @apply p-3 text-slate-100 hover:bg-red-600 rounded-lg text-sm font-medium;
+}
+
+/* Related Project Card */
+.related_project-card {
+  @apply flex-col rounded-2xl min-w-[210px] min-h-[197px];
+}
+
+.related_project-card_title {
+  @apply justify-end items-end w-full h-1/3 bg-gradient-to-b from-transparent to-black/50 rounded-b-2xl gap-2 absolute bottom-0 right-0 font-semibold text-lg text-white p-4;
+}
+
+.related_projects-grid {
+  @apply grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 mt-5;
+}
+
+/* Custom Menu */
+.custom_menu-btn {
+  @apply gap-4 w-full rounded-md bg-white p-4 text-base outline-none capitalize;
+}
+
+.custom_menu-items {
+  @apply flex-col absolute left-0 mt-2 xs:min-w-[300px] w-fit max-h-64 origin-top-right rounded-xl bg-white border border-nav-border shadow-menu overflow-y-auto;
+}
+
+.custom_menu-item {
+  @apply text-left w-full px-5 py-2 text-sm hover:bg-white self-start whitespace-nowrap capitalize;
+}
+
+/* Footer */
+.footer {
+  @apply flex-col paddings w-full gap-20 bg-white;
+}
+
+.footer_copyright {
+  @apply max-sm:flex-col w-full text-sm font-normal;
+}
+
+.footer_column {
+  @apply flex-1 flex flex-col gap-3 text-sm min-w-max;
+}
+
+/* Form Field */
+.form_field-input {
+  @apply w-full outline-0 bg-white rounded-xl p-4;
+}
+
+/* Modal */
+.modal {
+  @apply fixed z-10 left-0 right-0 top-0 bottom-0 mx-auto bg-black/80;
+}
+
+.modal_wrapper {
+  @apply flex items-center flex-col absolute h-[90%] bottom-0 bg-white rounded-t-3xl lg:px-40 px-8 pt-14 pb-72 overflow-auto;
+}
+
+/* Navbar */
+.navbar {
+  @apply py-5 px-8 border-b border-nav-border gap-4;
+}
+
+/* Profile Menu */
+.profile_menu-items {
+  @apply flex-col absolute right-1/2 translate-x-1/2 mt-3 p-7 sm:min-w-[300px] min-w-max rounded-xl bg-white border border-nav-border shadow-menu;
+}
+
+/* Profile Card */
+.profile_card-title {
+  @apply justify-end items-end w-full h-1/3 bg-gradient-to-b from-transparent to-black/50 rounded-b-2xl gap-2 absolute bottom-0 right-0 font-semibold text-lg text-white p-4;
+}
+
+/* Project Form */
+.form {
+  @apply flex-col w-full lg:pt-24 pt-12 gap-10 text-lg max-w-5xl mx-auto;
+}
+
+.form_image-container {
+  @apply w-full lg:min-h-[200px] min-h-[200px] relative ;
+}
+
+.form_image-label {
+  @apply z-10 text-center w-[350px] h-[350px] text-slate-500 border-2 border-slate-300 border-dashed;
+}
+
+.form_image-input {
+  @apply absolute z-30 w-full opacity-0 h-full cursor-pointer;
+}
+
+/* Profile Projects */
+.profile_projects {
+  @apply grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 mt-5;
 }

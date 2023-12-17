@@ -28,6 +28,6 @@ const PromptSchema = new Schema({
 });
 
 // If a Project model has already been registered, use that, otherwise create a new one
-const Prompt = models.Prompt || model("Prompt", PromptSchema);
+const Project = models.Project || model("Project", PromptSchema);
 
-export default Prompt;
+export default Project;
