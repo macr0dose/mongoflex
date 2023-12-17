@@ -3,11 +3,22 @@
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
 
 const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const pathName = usePathname();
+
+  // State for random likes and views
+  const [randomLikes, setRandomLikes] = useState(0);
+  const [randomViews, setRandomViews] = useState("");
+
+  useEffect(() => {
+    // Generate random likes and views
+    setRandomLikes(Math.floor(Math.random() * 10000));
+    setRandomViews((Math.floor(Math.random() * 10000) / 1000).toFixed(1) + "k");
+  }, [post.id]);
 
   const handleProfileClick = () => {
     if (post.creator._id === session?.user?.id) {
@@ -23,7 +34,10 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
     <div className="project_card">
       {/* Post Image from Cloudinary */}
       {post.image && (
-        <div className="mt-3 cursor-pointer" onClick={handleProfileClick}>
+        <div
+          className="mt-3 cursor-pointer image-container"
+          onClick={handleProfileClick}
+        >
           <Image
             src={post.image}
             alt={post.title}
@@ -45,9 +59,13 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             className="rounded-full object-cover"
           />
         </div>
+        <div className=" mt-2">
+          <span className="mr-2">{randomLikes} Likes</span>
+          <span>{randomViews} Views</span>
+        </div>
       </div>
-      <h3 className="font-semibold text-sm">{post.creator.name}</h3>
 
+      <h3 className="font-semibold text-sm">{post.creator.name}</h3>
       <p className="my-4 text-sm text-gray-700">{post.project}</p>
       <div className="hidden group-hover:flex profile_card-title">
         <p className="w-full">{post.title}</p>

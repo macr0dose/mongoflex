@@ -202,7 +202,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
         onSubmit={handleSubmit}
         className="mt-10 w-full max-w-2xl flex flex-col gap-7"
       >
-        <div className="flexCenter form_image-container">
+        <div className="flexCenter image-container">
           <label htmlFor="poster" className="flexCenter form_image-label">
             {!imagePreview && "Choose an image for your project"}
             <span className="font-semibold text-base"></span>

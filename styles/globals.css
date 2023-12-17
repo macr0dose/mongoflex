@@ -84,11 +84,11 @@ body {
   opacity: 0.15;
 } */
 
-@media screen and (max-width: 640px) {
+/* @media screen and (max-width: 1024px) {
   .main {
     padding: 0;
   }
-}
+} */
 
 /* Tailwind Styles */
 
@@ -149,7 +149,7 @@ body {
 } */
 
 .project_layout {
-  @apply flex-1 space-y-6 sm:columns-2 sm:gap-6 md:columns-2 lg:columns-3 w-full;
+  @apply py-8 sm:columns-2 sm:gap-6 xl:columns-3;
 }
 
 /* Feed Component */
@@ -181,7 +181,7 @@ body {
 
 /* ProjectCard Component */
 .project_card {
-  @apply break-inside-avoid rounded-lg p-6 pb-4 md:w-[360px] w-full h-fit;
+  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4 md:w-[360px] w-full h-fit ;
 }
 
 .flex-center {
@@ -210,7 +210,7 @@ body {
 
 ::-webkit-scrollbar {
   width: 5px;
-  height: 4px;
+  height: 6px;
 }
 
 ::-webkit-scrollbar-thumb {
@@ -322,8 +322,8 @@ body {
   @apply flex-col w-full lg:pt-24 pt-12 gap-10 text-lg max-w-5xl mx-auto;
 }
 
-.form_image-container {
-  @apply w-full lg:min-h-[200px] min-h-[200px] relative ;
+.image-container {
+  @apply flex justify-center items-center w-full;
 }
 
 .form_image-label {
@@ -331,7 +331,7 @@ body {
 }
 
 .form_image-input {
-  @apply absolute z-30 w-full opacity-0 h-full cursor-pointer;
+  @apply absolute z-30 w-[350px] opacity-0 h-[350px] cursor-pointer;
 }
 
 /* Profile Projects */
