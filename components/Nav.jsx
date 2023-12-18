@@ -185,7 +185,7 @@ const Nav = () => {
       </Link>
       <p className="logo_text pl-20">Login with Demo Account</p>
 
-      <div className="flex gap-6">
+      <div className="flex gap-6 cursor-pointer">
         {session?.user ? (
           <>
             <Link href="/create-project">
@@ -205,7 +205,6 @@ const Nav = () => {
           ))
         )}
       </div>
-      
     </nav>
   );
 };
