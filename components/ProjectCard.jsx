@@ -63,11 +63,6 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
           <h3 className="font-semibold text-sm">{post.creator.name}</h3>
         </div>
 
-        {/* Likes and Views */}
-        {/* <div className="text-xs text-right">
-          <div>{randomLikes} Likes</div>
-          <div>{randomViews} Views</div>
-        </div> */}
         <div className="flexCenter gap-2">
             <Image src="/assets/images/heart.svg" width={13} height={12} alt="heart" />
             <p className="text-sm">{randomLikes}</p>

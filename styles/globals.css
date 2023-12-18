@@ -327,11 +327,11 @@ body {
 }
 
 .form_image-label {
-  @apply z-10 text-center w-[350px] h-[350px] text-slate-500 border-2 border-slate-300 border-dashed;
+  @apply z-10 text-center w-[425px] h-[300px] text-slate-500 border-2 border-slate-300 border-dashed;
 }
 
 .form_image-input {
-  @apply absolute z-30 w-[350px] opacity-0 h-[350px] cursor-pointer;
+  @apply absolute z-30 w-[450px] opacity-0 h-[325px] cursor-pointer;
 }
 
 /* Profile Projects */

@@ -45,7 +45,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
   return (
     <Modal isOpen={isOpen} onDismiss={onDismiss}>
       <Dialog.Title as="h1" className="">
-        <p className="text-5xl font-bold text-left">
+        <p className="text-3xl font-bold text-left">
           <span> {type} Project </span>
         </p>
         {/* <p className="desc text-left max-w-md">
@@ -54,7 +54,7 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
       </Dialog.Title>
       <form
         onSubmit={handleSubmit}
-        className="mt-10 w-full max-w-2xl flex flex-col gap-7"
+        className="mt-5 w-full max-w-2xl flex flex-col gap-5"
       >
         <div className="flexCenter image-container">
           <label htmlFor="poster" className="flexCenter form_image-label">
@@ -67,11 +67,11 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
               className="form_image-input"
             />
             {imagePreview && (
-              <div className="">
+              <div className="form_image-label overflow-hidden p-2">
                 <img
                   src={imagePreview}
                   alt="Image Preview"
-                  className="h-[300px] w-[300px] object-contain z-20"
+                  className="w-full h-full"
                 />
               </div>
             )}
@@ -132,16 +132,20 @@ const Form = ({ type, post, setPost, submitting, handleSubmit }) => {
           </span>
           <CustomMenu state={post.category} setState={handleCategoryChange} />
         </label>
-        <button
-          type="submit"
-          disabled={submitting}
-          className="px-5 py-1.5 text-sm bg-primary-orange rounded-full text-white"
-        >
-          {submitting ? `${type}...` : type}
-        </button>
-        <Link href="/">
-          <button className="text-gray-500 text-small">Cancel</button>
-        </Link>
+        <div className="flex justify-end gap-2">
+          <Link href="/">
+            <div className="px-5 py-1.5 text-sm bg-gray-300 rounded-full text-black">
+              Cancel
+            </div>
+          </Link>
+          <button
+            type="submit"
+            disabled={submitting}
+            className="px-5 py-1.5 text-sm bg-purple-500 rounded-full text-white"
+          >
+            {submitting ? `${type}...` : type}
+          </button>
+        </div>
       </form>
     </Modal>
   );
