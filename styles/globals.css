@@ -108,8 +108,8 @@ body {
   @apply relative z-10 flex justify-center items-center flex-col max-w-7xl mx-auto sm:px-16 px-6;
 }
 
-.black_btn {
-  @apply rounded-full border border-primary-purple bg-primary-purple py-1.5 px-5 text-white transition-all hover:bg-primary-orange hover:text-white text-center text-sm flex items-center justify-center;
+.purple_btn {
+  @apply rounded-full border border-primary-purple bg-primary-purple py-1.5 px-5 text-white transition-all text-center text-sm sm:flex items-center justify-center hidden;
 }
 
 .outline_btn {
@@ -128,8 +128,8 @@ body {
   @apply bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent;
 }
 
-.blue_gradient {
-  @apply bg-gradient-to-r from-blue-600 to-cyan-600 bg-clip-text text-transparent;
+.purple_gradient {
+  @apply bg-gradient-to-r from-purple-500 to-indigo-500 bg-clip-text text-transparent;
 }
 
 .desc {
@@ -172,7 +172,7 @@ body {
 }
 
 .dropdown {
-  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg min-w-[210px] flex flex-col gap-2 justify-end items-end glassmorphism;
+  @apply absolute right-0 top-full mt-3 w-full p-5 rounded-lg min-w-[210px] flex flex-col gap-2 items-center glassmorphism;
 }
 
 .dropdown_link {
@@ -199,7 +199,6 @@ body {
 .flex-between {
   @apply flex justify-between items-center;
 }
-
 
 
 

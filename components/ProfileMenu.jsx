@@ -3,18 +3,38 @@
 import Link from "next/link";
 import Image from "next/image";
 import { signOut } from "next-auth/react";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import { Menu, Transition } from "@headlessui/react";
 
 const ProfileMenu = ({ session }) => {
   const [openModal, setOpenModal] = useState(false);
+  const menuRef = useRef();
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenModal(false);
+      }
+    };
+
+    // Bind the event listener
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      // Unbind the event listener on clean up
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [menuRef]);
+
+  const toggleMenu = () => {
+    setOpenModal(!openModal);
+  };
 
   return (
-    <div className="flexCenter z-10 flex-col relative">
+    <div className="flexCenter z-10 flex-col relative" ref={menuRef}>
       <Menu as="div">
         <Menu.Button
           className="flexCenter"
-          onMouseEnter={() => setOpenModal(true)}
+          onClick={toggleMenu}
         >
           {session?.user?.image && (
             <Image
@@ -40,7 +60,6 @@ const ProfileMenu = ({ session }) => {
           <Menu.Items
             static
             className="flexStart profile_menu-items"
-            onMouseLeave={() => setOpenModal(false)}
           >
             <div className="flex flex-col items-center gap-y-4">
               {session?.user?.image && (
@@ -57,39 +76,47 @@ const ProfileMenu = ({ session }) => {
 
             <div className="flex flex-col gap-3 pt-10 items-start w-full">
               <Menu.Item>
-                <Link
-                  href={`/profile/${session?.user?.id}`}
-                  className="text-sm"
-                >
-                  Work Preferences
-                </Link>
+                {({ active }) => (
+                  <Link href={`/profilemenu/${session?.user?.id}`}>
+                    <div className={`text-sm ${active ? 'text-blue-500' : 'text-black'}`}>
+                      Work Preferences
+                    </div>
+                  </Link>
+                )}
               </Menu.Item>
+              {/* <Menu.Item>
+                {({ active }) => (
+                  <Link href={`/profile/${session?.user?.id}`}>
+                    <div className={`text-sm ${active ? 'text-blue-500' : 'text-black'}`}>
+                      Settings
+                    </div>
+                  </Link>
+                )}
+              </Menu.Item> */}
               <Menu.Item>
-                <Link
-                  href={`/profile/${session?.user?.id}`}
-                  className="text-sm"
-                >
-                  Settings
-                </Link>
-              </Menu.Item>
-              <Menu.Item>
-                <Link
-                  href={`/profile/${session?.user?.id}`}
-                  className="text-sm"
-                >
-                  Profile
-                </Link>
+                <div >
+
+                </div>
+                {/* {({ active }) => (
+                  <Link href={`/profile/${session?.user?.id}`}>
+                    <div className={`text-sm ${active ? 'text-blue-500' : 'text-black'}`}>
+                      Profile
+                    </div>
+                  </Link>
+                )} */}
               </Menu.Item>
             </div>
             <div className="w-full flexStart border-t border-nav-border mt-5 pt-5">
               <Menu.Item>
-                <button
-                  type="button"
-                  className="text-sm"
-                  onClick={() => signOut()}
-                >
-                  Sign out
-                </button>
+                {({ active }) => (
+                  <button
+                    type="button"
+                    className={`text-sm ${active ? 'text-blue-500' : 'text-black'}`}
+                    onClick={() => signOut()}
+                  >
+                    Sign out
+                  </button>
+                )}
               </Menu.Item>
             </div>
           </Menu.Items>

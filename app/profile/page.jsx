@@ -51,7 +51,7 @@ const MyProfile = () => {
     <section>
       <Profile
         name={session?.user.name}
-        desc='Welcome to your personalized profile page. Share your exceptional projects and inspire others with the power of your imagination'
+        desc='Welcome to your personalized profile page. Share your exceptional projects and inspire others.'
         data={myPosts}
         handleEdit={handleEdit}
         handleDelete={handleDelete}

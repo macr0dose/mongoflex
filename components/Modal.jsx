@@ -1,5 +1,6 @@
-import React, { Fragment } from 'react';
-import { Dialog, Transition } from '@headlessui/react';
+import React, { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import Image from "next/image";
 
 const Modal = ({ isOpen, onDismiss, children }) => {
   return (
@@ -17,7 +18,20 @@ const Modal = ({ isOpen, onDismiss, children }) => {
             leaveTo="opacity-0 scale-95"
           >
             {/* Adjusted max-width and max-height */}
-            <Dialog.Panel className="w-full max-w-2xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all overflow-y-auto max-h-[95vh]">
+            <Dialog.Panel className="w-full sm:max-w-xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all overflow-y-auto max-h-screen">
+              <div className="flex justify-end">
+                <button
+                  className="text-gray-500 hover:text-gray-700"
+                  onClick={onDismiss}
+                >
+                  <Image
+                    src="/assets/images/close.svg"
+                    alt="close"
+                    width={30}
+                    height={30}
+                  />
+                </button>
+              </div>
               <div className="mt-3 text-center sm:mt-0 sm:text-left">
                 {children}
               </div>

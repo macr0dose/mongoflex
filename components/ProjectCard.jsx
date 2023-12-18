@@ -2,13 +2,12 @@
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { usePathname, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
-  const pathName = usePathname();
 
   // State for random likes and views
   const [randomLikes, setRandomLikes] = useState(0);
@@ -21,21 +20,17 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   }, [post.id]);
 
   const handleProfileClick = () => {
-    if (post.creator._id === session?.user?.id) {
-      router.push("/profile");
-    } else {
-      router.push(`/profile/${post.creator._id}?name=${post.creator.name}`);
-    }
+    router.push(`/profile/${post.creator._id}?name=${post.creator.name}`);
   };
 
   const isOwnPost = session?.user?.id === post.creator._id;
 
   return (
-    <div className="project_card">
+    <div className="project_card group">
       {/* Post Image from Cloudinary */}
       {post.image && (
         <div
-          className="mt-3 cursor-pointer image-container"
+          className="mt-3 cursor-pointer relative image-container"
           onClick={handleProfileClick}
         >
           <Image
@@ -45,12 +40,17 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             height={300}
             className="rounded-lg"
           />
+          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
+            <p className="hidden group-hover:block text-white text-lg ">
+              {post.title}
+            </p>
+          </div>
         </div>
       )}
 
       {/* User Avatar and Info */}
       <div className="flex justify-between items-center mt-3">
-        <div className="flex gap-3 items-center group">
+        <div className="flex gap-3 items-center">
           <div className="cursor-pointer" onClick={handleProfileClick}>
             <Image
               src={post.creator.avatarUrl}
@@ -64,15 +64,25 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
         </div>
 
         <div className="flexCenter gap-2">
-            <Image src="/assets/images/heart.svg" width={13} height={12} alt="heart" />
-            <p className="text-sm">{randomLikes}</p>
-            <Image src="/assets/images/eye.svg" width={13} height={12} alt="heart" />
-            <p className="text-sm">{randomViews}</p>
-          </div>
+          <Image
+            src="/assets/images/heart.svg"
+            width={13}
+            height={12}
+            alt="heart"
+          />
+          <p className="text-sm">{randomLikes}</p>
+          <Image
+            src="/assets/images/eye.svg"
+            width={13}
+            height={12}
+            alt="heart"
+          />
+          <p className="text-sm">{randomViews}</p>
+        </div>
       </div>
 
       {/* Edit and Delete Options for User's Own Posts */}
-      {isOwnPost && pathName.includes("/profile") && (
+      {isOwnPost && (
         <div className="mt-3 flex-center gap-4 border-t border-gray-100 p-3 ">
           <p
             className="text-lg green_gradient cursor-pointer border-r border-black pr-4"
@@ -81,7 +91,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             Edit
           </p>
           <p
-            className="text-lg  text-red-500 cursor-pointer"
+            className="text-lg text-red-500 cursor-pointer"
             onClick={handleDelete}
           >
             Delete
