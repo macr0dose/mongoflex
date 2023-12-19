@@ -2,12 +2,13 @@
 
 import Image from "next/image";
 import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 
 const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
+   const pathName = usePathname();
 
   // State for random likes and views
   const [randomLikes, setRandomLikes] = useState(0);
@@ -20,7 +21,11 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   }, [post.id]);
 
   const handleProfileClick = () => {
-    router.push(`/profile/${post.creator._id}?name=${post.creator.name}`);
+    if (post.creator._id === session?.user?.id) {
+      router.push("/profile");
+    } else {
+      router.push(`/profile/${post.creator._id}?name=${post.creator.name}`);
+    }
   };
 
   const isOwnPost = session?.user?.id === post.creator._id;
@@ -82,7 +87,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
       </div>
 
       {/* Edit and Delete Options for User's Own Posts */}
-      {isOwnPost && (
+      {isOwnPost && pathName.includes("/profile") && (
         <div className="mt-3 flex-center gap-4 border-t border-gray-100 p-3 ">
           <p
             className="text-lg green_gradient cursor-pointer border-r border-black pr-4"
@@ -91,7 +96,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             Edit
           </p>
           <p
-            className="text-lg text-red-500 cursor-pointer"
+            className="text-lg  text-red-500 cursor-pointer"
             onClick={handleDelete}
           >
             Delete
@@ -103,3 +108,5 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
 };
 
 export default ProjectCard;
+
+//add contact form
