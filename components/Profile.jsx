@@ -1,6 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect } from "react";
 import ProjectCard from "./ProjectCard";
-import { useSession } from 'next-auth/react';
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   const [bio, setBio] = useState("");
@@ -12,13 +13,15 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   // Function to fetch user bio
   const fetchBio = async () => {
     try {
-      console.log("Fetching bio for User ID:", userId);
+      // console.log("Fetching bio for User ID:", userId);
       const response = await fetch(`/api/users/${userId}/bio`, {
         method: "GET",
-        headers: { 'Content-Type': 'application/json' },
+        headers: { "Content-Type": "application/json" },
       });
       if (!response.ok) {
-        throw new Error(`Error fetching bio: ${response.status} ${response.statusText}`);
+        throw new Error(
+          `Error fetching bio: ${response.status} ${response.statusText}`
+        );
       }
       const data = await response.json();
       setBio(data.bio);
@@ -37,8 +40,8 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
     }
     try {
       const response = await fetch(`/api/users/${userId}/bio`, {
-        method: 'PATCH',
-        headers: { 'Content-Type': 'application/json' },
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ bio: newBio }),
       });
 
@@ -65,26 +68,56 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
 
   return (
     <section className="w-full">
-      <h1 className="head_text text-left">
-        <span className="purple_gradient">{name} Profile</span>
-      </h1>
+      <div className="flex justify-between items-center">
+        <h1 className="head_text">
+          <span className="purple_gradient">{name} Profile</span>
+        </h1>
+
+        {/* Conditionally render the Edit or Save button based on editMode */}
+        {session?.user?.id === userId &&
+          (editMode ? (
+            <button
+              className="bg-green-500 rounded-xl text-sm text-white font-medium p-2 mt-10"
+              onClick={saveBio}
+            >
+              <Image
+                src="/assets/images/pencil.svg"
+                alt="Edit"
+                width={20}
+                height={20}
+                className="inline-block mr-2"
+              />
+              Save
+            </button>
+          ) : (
+            <button
+              className="bg-primary-purple rounded-xl text-sm text-white font-medium p-2 mt-10"
+              onClick={() => setEditMode(true)}
+            >
+              <Image
+                src="/assets/images/pencil.svg"
+                alt="Edit"
+                width={20}
+                height={20}
+                className="inline-block mr-2"
+              />
+              Edit
+            </button>
+          ))}
+      </div>
       <p className="desc text-left">{desc}</p>
 
       {editMode ? (
-        <>
-          <textarea value={bio} onChange={(e) => setBio(e.target.value)} />
-          <button onClick={saveBio}>Save Bio</button>
-        </>
+        <textarea
+          className="w-full text-lg font-bold border border-slate-300 rounded-xl p-2"
+          placeholder="Tell us about yourself"
+          value={bio}
+          onChange={(e) => setBio(e.target.value)}
+        />
       ) : (
-        <>
-          <p className="md:text-5xl text-3xl font-extrabold md:mt-10 mt-5 max-w-lg">
-            {isFetchingBio ? "Loading..." : (bio || "Create your bio")}
-          </p>
-          {/* Check if the session user's ID matches the profile's user ID */}
-          {session?.user?.id === userId && (
-            <button onClick={() => setEditMode(true)}>Edit Bio</button>
-          )}
-        </>
+        <p className="md:text-5xl text-3xl font-extrabold md:mt-10 mt-5 ">
+          {isFetchingBio ? "Loading..." : bio || "Create your bio"}
+        </p>
       )}
 
       <div className="project_layout">
