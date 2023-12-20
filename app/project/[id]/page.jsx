@@ -1,25 +1,32 @@
-// import Image from "next/image";
-// import Link from "next/link";
+// import Image from 'next/image';
+// import Link from 'next/link';
+// import { useState, useEffect } from 'react';
+// import Modal from '@/components/Modal';
+// import RelatedProjects from '@/components/RelatedProjects';
+// import ProjectActions from '@/components/ProjectActions';
+// import { useSession } from 'next-auth/react';
 
-// import { getCurrentUser } from "@/lib/session";
-// import { getProjectDetails } from "@/lib/actions";
-// import Modal from "@/components/Modal";
-// import RelatedProjects from "@/components/RelatedProjects";
-// import { ProjectInterface } from "@/common.types";
-// import ProjectActions from "@/components/ProjectActions";
+// const Project = ({ id }) => {
+//   const { data: session } = useSession();
+//   const [projectDetails, setProjectDetails] = useState(null);
 
-// const Project = async ({ params: { id } }: { params: { id: string } }) => {
-//   const session = await getCurrentUser();
-//   const result = (await getProjectDetails(id)) as {
-//     project?: ProjectInterface;
-//   };
+//   useEffect(() => {
+//     const fetchProjectDetails = async () => {
+//       // Replace this with your API call to get project details
+//       const result = await getProjectDetails(id);
+//       if (result?.project) {
+//         setProjectDetails(result.project);
+//       }
+//     };
 
-//   if (!result?.project)
+//     fetchProjectDetails();
+//   }, [id]);
+
+//   if (!projectDetails) {
 //     return <p className="no-result-text">Failed to fetch project info</p>;
+//   }
 
-//   const projectDetails = result?.project;
-
-//   const renderLink = () => `/profile/${projectDetails?.createdBy?.id}`;
+//   const renderLink = () => `/profile/${projectDetails.createdBy.id}`;
 
 //   return (
 //     <Modal>
@@ -110,10 +117,10 @@
 //         <span className="w-full h-0.5 bg-light-white-200" />
 //       </section>
 
-//       <RelatedProjects
+//       {/* <RelatedProjects
 //         userId={projectDetails?.createdBy?.id}
 //         projectId={projectDetails?.id}
-//       />
+//       /> */}
 //     </Modal>
 //   );
 // };

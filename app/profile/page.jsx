@@ -53,6 +53,7 @@ const MyProfile = () => {
         name={session?.user.name}
         desc='Welcome to your personalized profile page. Share your exceptional projects and inspire others.'
         data={myPosts}
+        userId={session?.user?.id}
         handleEdit={handleEdit}
         handleDelete={handleDelete}
       />

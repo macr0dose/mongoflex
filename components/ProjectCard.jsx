@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
-   const pathName = usePathname();
+  const pathName = usePathname();
 
   // State for random likes and views
   const [randomLikes, setRandomLikes] = useState(0);
@@ -42,8 +42,9 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             src={post.image}
             alt={post.title}
             width={350}
-            height={300}
+            height={250}
             className="rounded-lg"
+            format="auto"
           />
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
             <p className="hidden group-hover:block text-white text-lg ">

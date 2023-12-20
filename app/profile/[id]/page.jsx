@@ -9,26 +9,38 @@ const UserProfile = ({ params }) => {
   const searchParams = useSearchParams();
   const userName = searchParams.get("name");
   const [userPosts, setUserPosts] = useState([]);
+  const [userBio, setUserBio] = useState("");
   const { data: session } = useSession();
 
   useEffect(() => {
-    const fetchPosts = async () => {
-      const response = await fetch(`/api/users/${params?.id}/posts`);
-      const data = await response.json();
-      setUserPosts(data);
+    const fetchPostsAndBio = async () => {
+      try {
+        // Fetch posts
+        const postsResponse = await fetch(`/api/users/${params?.id}/posts`);
+        const postsData = await postsResponse.json();
+        setUserPosts(postsData);
+
+        // Fetch bio
+        const bioResponse = await fetch(`/api/users/${params?.id}/bio`);
+        const bioData = await bioResponse.json();
+        setUserBio(bioData.bio);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
     };
 
-    if (params?.id) fetchPosts();
+    if (params?.id) fetchPostsAndBio();
   }, [params.id]);
 
-  // Determine if the currently logged-in user is the profile owner
   const isProfileOwner = session?.user?.id === params?.id;
 
   return (
     <Profile
       name={userName}
+      bio={userBio}
       data={userPosts}
       showHireMeButton={!isProfileOwner}
+      userId={params?.id}
     />
   );
 };
