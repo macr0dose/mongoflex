@@ -7,6 +7,7 @@
 // import { NavLinks } from "@/constants";
 // import ProfileMenu from "./ProfileMenu";
 // import NavMenu from "./NavMenu";
+// import AuthProviders from "./AuthProviders";
 // const Nav = () => {
 //   const { data: session } = useSession();
 //   const [providers, setProviders] = useState(null);
@@ -27,7 +28,6 @@
 
 //   return (
 //     <nav className="flexBetween w-full pt-3 pb-2 border-b border-slate-400">
-// <NavMenu session={session}/>
 //       <Link href="/" className="flex gap-2 flex-center">
 //         <Image
 //           src="/assets/images/logo.svg"
@@ -150,12 +150,14 @@
 // export default Nav;
 
 
-"use client"
+"use client";
 import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { signIn, useSession, getProviders } from "next-auth/react";
 import NavMenu from "./NavMenu";
+import ProfileMenu from "./ProfileMenu";
+import AuthProviders from "./AuthProviders";
 
 const Nav = () => {
   const { data: session } = useSession();
@@ -191,18 +193,14 @@ const Nav = () => {
             <Link href="/create-project">
               <div className="purple_btn sm:hidden md:block">Share work</div>
             </Link>
+            {/* Show NavMenu when user is signed in */}
             <NavMenu session={session}/>
           </>
         ) : (
-          providers && Object.values(providers).map((provider) => (
-            <button
-              key={provider.name}
-              onClick={() => signIn(provider.id)}
-              className="purple_btn"
-            >
-              Sign In
-            </button>
-          ))
+          <>
+            {/* Show AuthProviders only when no user is signed in */}
+            {!session && <AuthProviders/>}
+          </>
         )}
       </div>
     </nav>

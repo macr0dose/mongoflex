@@ -117,7 +117,7 @@ body {
 }
 
 .head_text {
-  @apply mt-5 text-5xl font-extrabold leading-[1.15] text-black sm:text-6xl;
+  @apply mt-5 text-4xl font-extrabold leading-[1.15] text-black sm:text-5xl;
 }
 
 .orange_gradient {
@@ -261,7 +261,7 @@ body {
   @apply grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-8 mt-5;
 }
 
-/* Custom Menu */
+/* Categories Menu */
 .custom_menu-btn {
   @apply gap-4 w-full rounded-md bg-white p-4 text-base outline-none capitalize;
 }

@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from 'react'; // Add useRef to the import statement
 import ProjectCard from "./ProjectCard";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -7,6 +7,7 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   const [bio, setBio] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [isFetchingBio, setIsFetchingBio] = useState(true);
+  const textareaRef = useRef(null); // Reference for the textarea
 
   const { data: session } = useSession();
 
@@ -55,12 +56,25 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
     }
   };
 
+    // Position cursor at the end of the text
+    const positionCursorToEnd = () => {
+      const textLength = textareaRef.current.value.length;
+      textareaRef.current.setSelectionRange(textLength, textLength);
+    };
+
   // Fetch bio when component mounts
   useEffect(() => {
     if (userId) {
       fetchBio();
     }
   }, [userId]);
+
+  useEffect(() => {
+    if (editMode) {
+      textareaRef.current?.focus(); // Autofocus the textarea in edit mode
+      positionCursorToEnd();
+    }
+  }, [editMode]);
 
   const saveBio = async () => {
     await handleBioUpdate(bio);
@@ -73,54 +87,43 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
           <span className="purple_gradient">{name} Profile</span>
         </h1>
 
-        {/* Conditionally render the Edit or Save button based on editMode */}
-        {session?.user?.id === userId &&
-          (editMode ? (
-            <button
-              className="bg-green-500 rounded-xl text-sm text-white font-medium p-2 mt-10"
-              onClick={saveBio}
-            >
-              <Image
-                src="/assets/images/pencil.svg"
-                alt="Edit"
-                width={20}
-                height={20}
-                className="inline-block mr-2"
-              />
-              Save
-            </button>
-          ) : (
-            <button
-              className="bg-primary-purple rounded-xl text-sm text-white font-medium p-2 mt-10"
-              onClick={() => setEditMode(true)}
-            >
-              <Image
-                src="/assets/images/pencil.svg"
-                alt="Edit"
-                width={20}
-                height={20}
-                className="inline-block mr-2"
-              />
-              Edit
-            </button>
-          ))}
+        {/* Check if the session user's ID matches the profile's user ID */}
+        {session?.user?.id === userId && (
+          <div>
+            {editMode ? (
+              <div className="flex gap-2">
+                <button className="bg-green-500 rounded-xl text-sm text-white font-medium p-2" onClick={saveBio}>
+                  Save
+                </button>
+                <button className="bg-red-500 rounded-xl text-xs text-white  p-2" onClick={() => setEditMode(false)}>
+                  Cancel
+                </button>
+              </div>
+            ) : (
+              <button className="bg-primary-purple rounded-xl text-sm text-white font-medium p-2 flex" onClick={() => setEditMode(true)}>
+                <Image src="/assets/images/pencil.svg" width={20} height={20} alt="Edit" />
+                Edit
+              </button>
+            )}
+          </div>
+        )}
       </div>
       <p className="desc text-left">{desc}</p>
 
       {editMode ? (
         <textarea
-          className="w-full text-lg font-bold border border-slate-300 rounded-xl p-2"
-          placeholder="Tell us about yourself"
+          ref={textareaRef}
+          className="w-full text-lg font-bold border border-slate-300 rounded-xl p-2 focus:border-purple-500"
           value={bio}
           onChange={(e) => setBio(e.target.value)}
         />
       ) : (
-        <p className="md:text-5xl text-3xl font-extrabold md:mt-10 mt-5 ">
+        <p className="md:text-3xl text-2xl font-extrabold md:mt-5 mt-4">
           {isFetchingBio ? "Loading..." : bio || "Create your bio"}
         </p>
       )}
 
-      <div className="project_layout">
+      <div className="project_layout mt-6">
         {data.map((post) => (
           <ProjectCard
             key={post._id}
