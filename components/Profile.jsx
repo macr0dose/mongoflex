@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react'; // Add useRef to the import statement
+import React, { useState, useEffect, useRef } from 'react';
 import ProjectCard from "./ProjectCard";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -82,6 +82,7 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
 
   return (
     <section className="w-full">
+
       <div className="flex justify-between items-center">
         <h1 className="head_text">
           <span className="purple_gradient">{name} Profile</span>
@@ -138,3 +139,5 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
 };
 
 export default Profile;
+
+///add loadmore component

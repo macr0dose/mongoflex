@@ -5,9 +5,9 @@ import Image from "next/image";
 const Modal = ({ isOpen, onDismiss, children }) => {
   return (
     <Transition appear show={isOpen} as={Fragment}>
-      <Dialog as="div" className="fixed inset-0 z-30" onClose={onDismiss}>
+      <Dialog as="div" className="fixed inset-0 z-30 overflow-y-auto flex items-center flex-col" onClose={onDismiss}>
         <div className="fixed inset-0 bg-black bg-opacity-80" />
-        <div className="flex items-center justify-center min-h-screen p-4 text-center">
+        <div className="flex items-center justify-center min-h-[640px] p-4 text-center">
           <Transition.Child
             as={Fragment}
             enter="ease-out duration-300"
@@ -17,19 +17,10 @@ const Modal = ({ isOpen, onDismiss, children }) => {
             leaveFrom="opacity-100 scale-100"
             leaveTo="opacity-0 scale-95"
           >
-            {/* Adjusted max-width and max-height */}
-            <Dialog.Panel className="w-full sm:max-w-xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all overflow-y-auto max-h-screen">
+            <Dialog.Panel className="w-full max-w-5xl transform rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
               <div className="flex justify-end">
-                <button
-                  className="text-gray-500 hover:text-gray-700"
-                  onClick={onDismiss}
-                >
-                  <Image
-                    src="/assets/images/close.svg"
-                    alt="close"
-                    width={30}
-                    height={30}
-                  />
+                <button className="text-gray-500 hover:text-gray-700" onClick={onDismiss}>
+                  <Image src="/assets/images/close.svg" alt="close" width={30} height={30} />
                 </button>
               </div>
               <div className="mt-3 text-center sm:mt-0 sm:text-left">

@@ -1,128 +1,108 @@
-// import Image from 'next/image';
-// import Link from 'next/link';
-// import { useState, useEffect } from 'react';
-// import Modal from '@/components/Modal';
-// import RelatedProjects from '@/components/RelatedProjects';
-// import ProjectActions from '@/components/ProjectActions';
-// import { useSession } from 'next-auth/react';
+import Image from "next/image";
+import Link from "next/link";
+import { useState, useEffect } from "react";
 
-// const Project = ({ id }) => {
-//   const { data: session } = useSession();
-//   const [projectDetails, setProjectDetails] = useState(null);
+const ProjectDetails = ({ projectId }) => {
+  const [project, setProject] = useState(null);
 
-//   useEffect(() => {
-//     const fetchProjectDetails = async () => {
-//       // Replace this with your API call to get project details
-//       const result = await getProjectDetails(id);
-//       if (result?.project) {
-//         setProjectDetails(result.project);
-//       }
-//     };
+  useEffect(() => {
+    // Fetch project details based on the projectId
+    fetch(`/api/project/${projectId}`)
+      .then((response) => response.json())
+      .then((data) => setProject(data))
+      .catch((error) =>
+        console.error("Error fetching project details:", error)
+      );
+  }, [projectId]);
 
-//     fetchProjectDetails();
-//   }, [id]);
+  if (!project) {
+    return <p>Loading project info...</p>;
+  }
 
-//   if (!projectDetails) {
-//     return <p className="no-result-text">Failed to fetch project info</p>;
-//   }
+  return (
+    <>
+      <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
+        <div className="flex items-start gap-5 w-full max-xs:flex-col pb-8">
+          <Image
+            src={project.creator.avatarUrl}
+            alt="Creator Avatar"
+            width={50}
+            height={50}
+            className="rounded-full mr-3"
+          />
 
-//   const renderLink = () => `/profile/${projectDetails.createdBy.id}`;
+          <div className="flex-1 flexStart flex-col gap-1">
+            <p className="self-start text-lg font-semibold">{project?.title}</p>
 
-//   return (
-//     <Modal>
-//       <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
-//         <div className="flex-1 flex items-start gap-5 w-full max-xs:flex-col">
-//           <Link href={renderLink()}>
-//             <Image
-//               src={projectDetails?.createdBy?.avatarUrl}
-//               width={50}
-//               height={50}
-//               alt="profile"
-//               className="rounded-full"
-//             />
-//           </Link>
+            <div className="user-info">
+              <div className="flex items-center mb-4">
+                <p>{project.creator.name}</p>
+                <Image
+                  src="/assets/images/dot.svg"
+                  width={4}
+                  height={4}
+                  alt="dot"
+                />
+                <p className="text-primary-purple font-semibold">
+                  {project.category}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
 
-//           <div className="flex-1 flexStart flex-col gap-1">
-//             <p className="self-start text-lg font-semibold">
-//               {projectDetails?.title}
-//             </p>
-//             <div className="user-info">
-//               <Link href={renderLink()}>{projectDetails?.createdBy?.name}</Link>
-//               <Image src="/dot.svg" width={4} height={4} alt="dot" />
-//               <Link
-//                 href={`/?category=${projectDetails.category}`}
-//                 className="text-primary-purple font-semibold"
-//               >
-//                 {projectDetails?.category}
-//               </Link>
-//             </div>
-//           </div>
-//         </div>
+      <section>
+        {project.image && (
+          <Image
+            src={project.image}
+            alt="Project Image"
+            width={1064}
+            height={798}
+            className="rounded-2xl max-w-[840px] max-h-[700px]"
+          />
+        )}
+      </section>
 
-//         {session?.user?.email === projectDetails?.createdBy?.email && (
-//           <div className="flex justify-end items-center gap-2">
-//             <ProjectActions projectId={projectDetails?.id} />
-//           </div>
-//         )}
-//       </section>
+      <section className="flexCenter flex-col mt-20">
+        <p className="max-w-5xl text-xl font-normal">{project?.description}</p>
 
-//       <section className="mt-14">
-//         <Image
-//           src={`${projectDetails?.image}`}
-//           className="object-cover rounded-2xl"
-//           width={1064}
-//           height={798}
-//           alt="poster"
-//           loading="lazy"
-//         />
-//       </section>
+        <div className="flex flex-wrap mt-5 gap-5">
+          <Link
+            href={project?.githubUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="flexCenter gap-2 text-sm font-medium text-primary-purple"
+          >
+            🖥 <span className="underline">Github</span>
+          </Link>
+          <Image src="/assets/images/dot.svg" width={4} height={4} alt="dot" />
+          <Link
+            href={project?.liveSiteUrl}
+            target="_blank"
+            rel="noreferrer"
+            className="flexCenter gap-2 text-sm font-medium text-primary-purple"
+          >
+            🚀 <span className="underline">Live Site</span>
+          </Link>
+        </div>
+      </section>
 
-//       <section className="flexCenter flex-col mt-20">
-//         <p className="max-w-5xl text-xl font-normal">
-//           {projectDetails?.description}
-//         </p>
+      <section className="flexCenter w-full gap-8 mt-20">
+        <span className="w-full h-0.5 bg-light-white-200" />
+        <div className="min-w-[82px] h-[82px]">
+          <Image
+            src={project.creator.avatarUrl}
+            className="rounded-full"
+            width={82}
+            height={82}
+            alt="profile image"
+          />
+        </div>
+        <span className="w-full h-0.5 bg-light-white-200" />
+      </section>
+    </>
+  );
+};
 
-//         <div className="flex flex-wrap mt-5 gap-5">
-//           <Link
-//             href={projectDetails?.githubUrl}
-//             target="_blank"
-//             rel="noreferrer"
-//             className="flexCenter gap-2 tex-sm font-medium text-primary-purple"
-//           >
-//             🖥 <span className="underline">Github</span>
-//           </Link>
-//           <Image src="/dot.svg" width={4} height={4} alt="dot" />
-//           <Link
-//             href={projectDetails?.liveSiteUrl}
-//             target="_blank"
-//             rel="noreferrer"
-//             className="flexCenter gap-2 tex-sm font-medium text-primary-purple"
-//           >
-//             🚀 <span className="underline">Live Site</span>
-//           </Link>
-//         </div>
-//       </section>
-
-//       <section className="flexCenter w-full gap-8 mt-28">
-//         <span className="w-full h-0.5 bg-light-white-200" />
-//         <Link href={renderLink()} className="min-w-[82px] h-[82px]">
-//           <Image
-//             src={projectDetails?.createdBy?.avatarUrl}
-//             className="rounded-full"
-//             width={82}
-//             height={82}
-//             alt="profile image"
-//           />
-//         </Link>
-//         <span className="w-full h-0.5 bg-light-white-200" />
-//       </section>
-
-//       {/* <RelatedProjects
-//         userId={projectDetails?.createdBy?.id}
-//         projectId={projectDetails?.id}
-//       /> */}
-//     </Modal>
-//   );
-// };
-
-// export default Project;
+export default ProjectDetails;

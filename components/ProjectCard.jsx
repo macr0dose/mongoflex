@@ -4,11 +4,14 @@ import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
+import ProjectDetails from "@app/project/[id]/page";
+import Modal from "./Modal";
 
 const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const pathName = usePathname();
+  const [showModal, setShowModal] = useState(false); 
 
   // State for random likes and views
   const [randomLikes, setRandomLikes] = useState(0);
@@ -27,25 +30,29 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
       router.push(`/profile/${post.creator._id}?name=${post.creator.name}`);
     }
   };
+  
+  const handleImageClick = () => {
+    setShowModal(true); // Open the modal when the image is clicked
+  };
+
+  const closeModal = () => {
+    setShowModal(false); // Close the modal
+  };
 
   const isOwnPost = session?.user?.id === post.creator._id;
 
   return (
     <div className="project_card group">
+      {showModal && (
+        <Modal isOpen={showModal} onDismiss={closeModal}>
+          <ProjectDetails projectId={post._id} />
+        </Modal>
+      )}
+
       {/* Post Image from Cloudinary */}
       {post.image && (
-        <div
-          className="mt-3 cursor-pointer relative image-container"
-          onClick={handleProfileClick}
-        >
-          <Image
-            src={post.image}
-            alt={post.title}
-            width={350}
-            height={250}
-            className="rounded-lg"
-            format="auto"
-          />
+        <div className="mt-3 cursor-pointer relative image-container" onClick={handleImageClick}>
+          <Image src={post.image} alt={post.title} width={350} height={250} className="rounded-lg " format="auto" />
           <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
             <p className="hidden group-hover:block text-white text-lg ">
               {post.title}
