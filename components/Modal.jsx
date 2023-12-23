@@ -23,7 +23,7 @@ const Modal = ({ isOpen, onDismiss, children }) => {
                   <Image src="/assets/images/close.svg" alt="close" width={30} height={30} />
                 </button>
               </div>
-              <div className="mt-3 text-center sm:mt-0 sm:text-left">
+              <div className="mt-3 text-center sm:mt-0 sm:text-left items-center w-full">
                 {children}
               </div>
             </Dialog.Panel>

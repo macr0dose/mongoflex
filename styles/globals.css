@@ -181,7 +181,7 @@ body {
 
 /* ProjectCard Component */
 .project_card {
-  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4  w-full h-fit ;
+  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4  w-[full] h-fit ;
 }
 
 .flex-center {
@@ -234,9 +234,10 @@ body {
   @apply flex flex-wrap whitespace-nowrap text-sm font-normal gap-2 w-full;
 }
 
+
 /* Home */
 .projects-grid {
-  @apply grid xl:grid-cols-4 md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-10 mt-10 w-full;
+  @apply grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-10 mt-10 w-full;
 }
 
 /* Project Actions */

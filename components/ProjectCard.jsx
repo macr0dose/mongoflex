@@ -11,7 +11,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   const { data: session } = useSession();
   const router = useRouter();
   const pathName = usePathname();
-  const [showModal, setShowModal] = useState(false); 
+  const [showModal, setShowModal] = useState(false);
 
   // State for random likes and views
   const [randomLikes, setRandomLikes] = useState(0);
@@ -30,7 +30,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
       router.push(`/profile/${post.creator._id}?name=${post.creator.name}`);
     }
   };
-  
+
   const handleImageClick = () => {
     setShowModal(true); // Open the modal when the image is clicked
   };
@@ -45,24 +45,32 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
     <div className="project_card group">
       {showModal && (
         <Modal isOpen={showModal} onDismiss={closeModal}>
-          <ProjectDetails projectId={post._id} />
+          <div className="project_details_container">
+            <ProjectDetails projectId={post._id} />
+          </div>
         </Modal>
       )}
 
       {/* Post Image from Cloudinary */}
       {post.image && (
-        <div className="mt-3 cursor-pointer relative image-container" onClick={handleImageClick}>
-          <Image src={post.image} alt={post.title} width={350} height={250} className="rounded-lg " format="auto" />
-          <div className="absolute top-0 left-0 w-full h-full flex items-center justify-center rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
-            <p className="hidden group-hover:block text-white text-lg ">
-              {post.title}
-            </p>
-          </div>
-        </div>
-      )}
+  <div className="rounded-2xl overflow-hidden cursor-pointer relative w-72 h-56" onClick={handleImageClick}>
+    <Image
+      src={post.image}
+      width={300}
+      height={200}
+      alt={post.title}
+      className="object-cover rounded-2xl"
+    />
+    <div className="absolute bottom-0 left-0 w-full h-1/2 flex items-center justify-center rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
+      <p className="hidden group-hover:block text-white text-lg">
+        {post.title}
+      </p>
+    </div>
+  </div>
+)}
 
       {/* User Avatar and Info */}
-      <div className="flex justify-between items-center mt-3">
+      <div className="flexBetween w-full px-2 mt-3 font-semibold text-sm">
         <div className="flex gap-3 items-center">
           <div className="cursor-pointer" onClick={handleProfileClick}>
             <Image

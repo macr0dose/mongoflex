@@ -60,8 +60,8 @@ const ProjectDetails = ({ projectId }) => {
             alt="Project Image"
             width={1064}
             height={798}
-            className="rounded-2xl"
-            layout="responsive" // Set layout to "responsive"
+            className="rounded-2xl max-w-[800px] max-h-[520px] "
+            // layout="responsive"
           />
         )}
       </section>
