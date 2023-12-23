@@ -10,6 +10,7 @@ const MyProfile = () => {
   const router = useRouter();
   const { data: session } = useSession();
 
+
   const [myPosts, setMyPosts] = useState([]);
 
   useEffect(() => {
@@ -51,7 +52,7 @@ const MyProfile = () => {
     <section>
       <Profile
         name={session?.user.name}
-        desc='Welcome to your custom profile page! Showcase your amazing projects and inspire your peers.'
+        desc="Welcome to your custom profile page! Showcase your amazing projects and inspire your peers."
         data={myPosts}
         userId={session?.user?.id}
         handleEdit={handleEdit}
@@ -62,3 +63,5 @@ const MyProfile = () => {
 };
 
 export default MyProfile;
+
+//add hire me button

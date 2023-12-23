@@ -15,6 +15,11 @@ const Feed = () => {
   const [searchTimeout, setSearchTimeout] = useState(null);
   const [searchedResults, setSearchedResults] = useState([]);
 
+  const isLoadMoreVisible = searchText
+    ? searchedResults.length > projectsPerPage
+    : allPosts.length > projectsPerPage &&
+      displayedPosts.length < allPosts.length;
+
   const fetchPosts = async () => {
     const response = await fetch("/api/project");
     const data = await response.json();
@@ -64,8 +69,21 @@ const Feed = () => {
   return (
     <section className="feed">
       <div className="relative w-full md:w-1/2 flex items-center pb-2">
-        <img src="/assets/icons/search.svg" alt="Search" width={40} height={40} className="absolute" />
-        <input type="text" placeholder="Search by title, description, or category" value={searchText} onChange={handleSearchChange} required className="search_input" />
+        <img
+          src="/assets/icons/search.svg"
+          alt="Search"
+          width={40}
+          height={40}
+          className="absolute"
+        />
+        <input
+          type="text"
+          placeholder="Search by title, description, or category"
+          value={searchText}
+          onChange={handleSearchChange}
+          required
+          className="search_input"
+        />
       </div>
 
       <div className="w-full">
@@ -73,25 +91,25 @@ const Feed = () => {
       </div>
 
       <div className="project_layout">
-        {searchText ? (
-          searchedResults.map((post) => <ProjectCard key={post._id} post={post} />)
-        ) : (
-          displayedPosts.map((post) => <ProjectCard key={post._id} post={post} />)
-        )}
+        {searchText
+          ? searchedResults.map((post) => (
+              <ProjectCard key={post._id} post={post} />
+            ))
+          : displayedPosts.map((post) => (
+              <ProjectCard key={post._id} post={post} />
+            ))}
       </div>
 
-      {displayedPosts.length < allPosts.length && (
-        <LoadMore loadMore={loadMoreProjects} />
+      {isLoadMoreVisible && (
+        <div className="pb-10">
+          <LoadMore loadMore={loadMoreProjects} />
+        </div>
       )}
     </section>
   );
 };
 
 export default Feed;
-
-
-
-
 
 // "use client";
 
@@ -100,7 +118,6 @@ export default Feed;
 // import ProjectCard from "./ProjectCard";
 // import Categories from "./Categories";
 // import LoadMore from "./LoadMore";
-
 
 // const Feed = () => {
 //   const [allPosts, setAllPosts] = useState([]);
@@ -201,4 +218,3 @@ export default Feed;
 // };
 
 // export default Feed;
-

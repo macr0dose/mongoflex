@@ -32,11 +32,11 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
   };
 
   const handleImageClick = () => {
-    setShowModal(true); // Open the modal when the image is clicked
+    setShowModal(true);
   };
 
   const closeModal = () => {
-    setShowModal(false); // Close the modal
+    setShowModal(false);
   };
 
   const isOwnPost = session?.user?.id === post.creator._id;
@@ -51,23 +51,24 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
         </Modal>
       )}
 
-      {/* Post Image from Cloudinary */}
+      {/* Get Image from Cloudinary */}
       {post.image && (
-  <div className="rounded-2xl overflow-hidden cursor-pointer relative w-72 h-56" onClick={handleImageClick}>
-    <Image
-      src={post.image}
-      width={300}
-      height={200}
-      alt={post.title}
-      className="object-cover rounded-2xl"
-    />
-    <div className="absolute bottom-0 left-0 w-full h-1/2 flex items-center justify-center rounded-lg bg-black bg-opacity-0 group-hover:bg-opacity-50 transition-all duration-300">
-      <p className="hidden group-hover:block text-white text-lg">
-        {post.title}
-      </p>
-    </div>
-  </div>
-)}
+        <div
+          className="rounded-2xl cursor-pointer relative w-72 h-56"
+          onClick={handleImageClick}
+        >
+          <Image
+            src={post.image}
+            width={300}
+            height={200}
+            alt={post.title}
+            className="object-fill rounded-2xl w-full h-full"
+          />
+          <div className="hidden group-hover:flex profile_card-title">
+            <p className="w-full">{post.title}</p>
+          </div>
+        </div>
+      )}
 
       {/* User Avatar and Info */}
       <div className="flexBetween w-full px-2 mt-3 font-semibold text-sm">

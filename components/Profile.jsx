@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import ProjectCard from "./ProjectCard";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
@@ -56,11 +56,11 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
     }
   };
 
-    // Position cursor at the end of the text
-    const positionCursorToEnd = () => {
-      const textLength = textareaRef.current.value.length;
-      textareaRef.current.setSelectionRange(textLength, textLength);
-    };
+  // Position cursor at the end of the text
+  const positionCursorToEnd = () => {
+    const textLength = textareaRef.current.value.length;
+    textareaRef.current.setSelectionRange(textLength, textLength);
+  };
 
   // Fetch bio when component mounts
   useEffect(() => {
@@ -81,9 +81,8 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   };
 
   return (
-    <section className="w-full">
-
-      <div className="flex justify-between items-center">
+    <section className="feed">
+      <div className="flex justify-between w-full">
         <h1 className="head_text">
           <span className="purple_gradient">{name} Profile</span>
         </h1>
@@ -92,24 +91,37 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
         {session?.user?.id === userId && (
           <div>
             {editMode ? (
-              <div className="flex gap-2">
-                <button className="bg-green-500 rounded-xl text-sm text-white font-medium p-2" onClick={saveBio}>
+              <div className="flex gap-2 mt-6">
+                <button
+                  className="bg-green-500 rounded-xl text-sm text-white font-medium p-2"
+                  onClick={saveBio}
+                >
                   Save
                 </button>
-                <button className="bg-red-500 rounded-xl text-xs text-white  p-2" onClick={() => setEditMode(false)}>
+                <button
+                  className="bg-red-500 rounded-xl text-xs text-white p-2"
+                  onClick={() => setEditMode(false)}
+                >
                   Cancel
                 </button>
               </div>
             ) : (
-              <button className="bg-primary-purple rounded-xl text-sm text-white font-medium p-2 flex" onClick={() => setEditMode(true)}>
-                <Image src="/assets/images/pencil.svg" width={20} height={20} alt="Edit" />
-                Edit
+              <button
+                className="bg-purple-300 rounded-xl text-sm text-white font-medium p-2 flex mt-6"
+                onClick={() => setEditMode(true)}
+              >
+                <Image
+                  src="/assets/images/pencil.svg"
+                  width={20}
+                  height={20}
+                  alt="Edit"
+                />
               </button>
             )}
           </div>
         )}
       </div>
-      <p className="desc text-left">{desc}</p>
+      <p className="text-lg w-full ">{desc}</p>
 
       {editMode ? (
         <textarea
@@ -119,12 +131,12 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
           onChange={(e) => setBio(e.target.value)}
         />
       ) : (
-        <p className="md:text-3xl text-2xl font-extrabold md:mt-5 mt-4">
+        <p className="md:text-3xl text-2xl font-extrabold md:mt-5 mt-4 w-full">
           {isFetchingBio ? "Loading..." : bio || "Create your bio"}
         </p>
       )}
 
-      <div className="project_layout mt-6">
+      <div className="project_layout mt-6 project_card">
         {data.map((post) => (
           <ProjectCard
             key={post._id}
@@ -140,4 +152,3 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
 
 export default Profile;
 
-///add loadmore component

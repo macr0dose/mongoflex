@@ -109,7 +109,7 @@ body {
 }
 
 .purple_btn {
-  @apply rounded-full border border-primary-purple bg-primary-purple py-1.5 px-5 text-white transition-all text-center text-sm sm:flex items-center justify-center hidden;
+  @apply rounded-lg border border-primary-purple bg-primary-purple py-1.5 px-5 text-white transition-all text-center text-sm sm:flex items-center justify-center hidden;
 }
 
 .outline_btn {
@@ -149,7 +149,7 @@ body {
 }
 
 .project_layout {
-  @apply py-8 sm:columns-2 sm:gap-6 xl:columns-3;
+  @apply py-8 grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-5;
 }
 
 /* Feed Component */
@@ -181,7 +181,7 @@ body {
 
 /* ProjectCard Component */
 .project_card {
-  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4  w-[full] h-fit ;
+  @apply flex-1 break-inside-avoid rounded-lg p-6 pb-4 w-[full] h-fit ;
 }
 
 .flex-center {
@@ -237,7 +237,7 @@ body {
 
 /* Home */
 .projects-grid {
-  @apply grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-10 mt-10 w-full;
+  @apply grid xl:grid-cols-3 md:grid-cols-2 sm:grid-cols-2 grid-cols-1 gap-5 mt-10 w-full;
 }
 
 /* Project Actions */
