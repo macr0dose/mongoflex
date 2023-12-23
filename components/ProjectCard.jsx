@@ -62,7 +62,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
             width={300}
             height={200}
             alt={post.title}
-            className="object-fill rounded-2xl w-full h-full"
+            className="object-contain rounded-2xl w-full h-full"
           />
           <div className="hidden group-hover:flex profile_card-title">
             <p className="w-full">{post.title}</p>
