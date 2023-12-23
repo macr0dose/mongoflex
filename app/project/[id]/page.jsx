@@ -86,7 +86,7 @@ const ProjectDetails = ({ projectId }) => {
             alt="Project Image"
             width={800}
             height={520}
-            className="rounded-2xl max-w-[800px] max-h-[520px] object-contain"
+            className="rounded-2xl md:max-w-[800px] md:max-h-[520px] object-cover "
           />
         )}
       </section>
