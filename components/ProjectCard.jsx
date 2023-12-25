@@ -3,7 +3,7 @@
 import Image from "next/image";
 import { useSession } from "next-auth/react";
 import { usePathname, useRouter } from "next/navigation";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import ProjectDetails from "@app/project/[id]/page";
 import Modal from "./Modal";
 
@@ -46,7 +46,7 @@ const ProjectCard = ({ post, handleEdit, handleDelete }) => {
       {showModal && (
         <Modal isOpen={showModal} onDismiss={closeModal}>
           <div className="project_details_container">
-            <ProjectDetails projectId={post._id} />
+            <ProjectDetails projectId={post._id} onCloseModal={closeModal} />
           </div>
         </Modal>
       )}

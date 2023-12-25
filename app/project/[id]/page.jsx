@@ -6,9 +6,10 @@ import { useSession } from "next-auth/react";
 import Image from "next/image";
 import Link from "next/link";
 
-const ProjectDetails = ({ projectId }) => {
+const ProjectDetails = ({ projectId, onCloseModal }) => {
   const [project, setProject] = useState(null);
   const router = useRouter();
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { data: session } = useSession();
 
   useEffect(() => {
@@ -45,11 +46,17 @@ const ProjectDetails = ({ projectId }) => {
         ? "/profile"
         : `/profile/${project.creator._id}?name=${project.creator.name}`;
     router.push(profileUrl);
+    if (onCloseModal) {
+      onCloseModal();
+    }
   };
 
   const handleCategoryClick = (category) => {
     // Navigate to the main page with the selected category as a query parameter
     router.push(`/?category=${category}`);
+    if (onCloseModal) {
+      onCloseModal();
+    }
   };
 
   return (
@@ -77,7 +84,15 @@ const ProjectDetails = ({ projectId }) => {
                   height={4}
                   alt="dot"
                 />
-                <p className="text-primary-purple font-semibold"                 onClick={() => handleCategoryClick(category)}>{category}</p>
+                <p
+                  className="text-primary-purple font-semibold cursor-pointer"
+                  onClick={() => {
+                    setIsModalOpen(true); // Open the modal
+                    handleCategoryClick(category);
+                  }}
+                >
+                  {category}
+                </p>
               </div>
             </div>
           </div>
@@ -108,12 +123,7 @@ const ProjectDetails = ({ projectId }) => {
           >
             🖥 <span className="underline text-lg">Github</span>
           </Link>
-            <Image
-              src="/assets/images/dot.svg"
-              width={4}
-              height={4}
-              alt="dot"
-            />
+          <Image src="/assets/images/dot.svg" width={4} height={4} alt="dot" />
           <Link
             href={liveSiteUrl}
             target="_blank"
