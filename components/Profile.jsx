@@ -84,7 +84,7 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
       <div className="flex justify-between w-full">
         <div className="flex-1">
           <Image
-            src={userAvatarUrl} // Replace with the actual path to the avatar image
+            src={userAvatarUrl}
             width={100}
             height={100}
             alt="Avatar"
@@ -146,7 +146,7 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
       <div className="flex w-full">
         {session?.user?.id !== userId && (
           <Link href={`mailto:${userEmail}`}>
-            <div className="flex bg-purple-400 rounded-xl p-2 gap-2 text-white">
+            <div className="flex bg-purple-400 rounded-xl p-2 gap-2 text-white mt-4">
               <Image
                 src="/assets/images/email.svg"
                 width={20}
@@ -160,7 +160,7 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
       </div>
       <p className="text-lg w-full ">{desc}</p>
 
-      <div className="project_layout mt-6 project_card">
+      <div className="project_layout project_card justify-items-center">
         {data.map((post) => (
           <ProjectCard
             key={post._id}

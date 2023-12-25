@@ -47,6 +47,11 @@ const ProjectDetails = ({ projectId }) => {
     router.push(profileUrl);
   };
 
+  const handleCategoryClick = (category) => {
+    // Navigate to the main page with the selected category as a query parameter
+    router.push(`/?category=${category}`);
+  };
+
   return (
     <>
       <section className="flexBetween gap-y-8 max-w-4xl max-xs:flex-col w-full">
@@ -64,7 +69,7 @@ const ProjectDetails = ({ projectId }) => {
           <div className="flex-1 flexStart flex-col gap-1">
             <p className="self-start text-lg font-semibold">{title}</p>
             <div className="user-info">
-              <div className="flex items-center mb-4">
+              <div className="flex items-center mb-4 gap-2">
                 <p>{creator.name}</p>
                 <Image
                   src="/assets/images/dot.svg"
@@ -72,7 +77,7 @@ const ProjectDetails = ({ projectId }) => {
                   height={4}
                   alt="dot"
                 />
-                <p className="text-primary-purple font-semibold">{category}</p>
+                <p className="text-primary-purple font-semibold"                 onClick={() => handleCategoryClick(category)}>{category}</p>
               </div>
             </div>
           </div>
@@ -86,7 +91,7 @@ const ProjectDetails = ({ projectId }) => {
             alt="Project Image"
             width={800}
             height={520}
-            className="rounded-2xl md:max-w-[800px] md:max-h-[520px] object-cover "
+            className="rounded-2xl md:max-w-[800px] md:max-h-[520px] object-cover"
           />
         )}
       </section>
@@ -103,7 +108,12 @@ const ProjectDetails = ({ projectId }) => {
           >
             🖥 <span className="underline text-lg">Github</span>
           </Link>
-          <Image src="/assets/images/dot.svg" width={4} height={4} alt="dot" />
+            <Image
+              src="/assets/images/dot.svg"
+              width={4}
+              height={4}
+              alt="dot"
+            />
           <Link
             href={liveSiteUrl}
             target="_blank"
@@ -138,5 +148,3 @@ const ProjectDetails = ({ projectId }) => {
 };
 
 export default ProjectDetails;
-
-///add hire me button

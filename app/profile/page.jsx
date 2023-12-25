@@ -49,7 +49,6 @@ const MyProfile = () => {
   };
 
   return (
-    <section>
       <Profile
         name={session?.user.name}
         desc="Welcome to your custom profile page! Showcase your amazing projects and inspire your peers."
@@ -58,7 +57,6 @@ const MyProfile = () => {
         handleEdit={handleEdit}
         handleDelete={handleDelete}
       />
-    </section>
   );
 };
 

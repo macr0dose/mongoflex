@@ -68,7 +68,11 @@ const CreatePrompt = () => {
     }
   };
 
-  return <Form type="Create" post={post} setPost={setPost} submitting={submitting} handleSubmit={createPrompt} />;
+  return (
+    <div className="max-w-md mx-auto px-4 sm:px-6 lg:px-8">
+      <Form type="Create" post={post} setPost={setPost} submitting={submitting} handleSubmit={createPrompt} />
+    </div>
+  );
 };
 
 export default CreatePrompt;
