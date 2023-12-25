@@ -68,6 +68,7 @@ const Feed = () => {
 
   return (
     <section className="feed">
+
       <div className="relative w-full md:w-1/2 flex items-center pb-2">
         <img
           src="/assets/icons/search.svg"

@@ -2,30 +2,29 @@ import React, { useState, useEffect, useRef } from "react";
 import ProjectCard from "./ProjectCard";
 import { useSession } from "next-auth/react";
 import Image from "next/image";
+import Link from "next/link";
 
 const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   const [bio, setBio] = useState("");
   const [editMode, setEditMode] = useState(false);
   const [isFetchingBio, setIsFetchingBio] = useState(true);
   const textareaRef = useRef(null); // Reference for the textarea
+  const [userEmail, setUserEmail] = useState("");
+  const [userAvatarUrl, setUserAvatarUrl] = useState("");
 
   const { data: session } = useSession();
 
   // Function to fetch user bio
-  const fetchBio = async () => {
+  const userInfo = async () => {
     try {
-      // console.log("Fetching bio for User ID:", userId);
-      const response = await fetch(`/api/users/${userId}/bio`, {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(`/api/users/${userId}/bio`);
       if (!response.ok) {
-        throw new Error(
-          `Error fetching bio: ${response.status} ${response.statusText}`
-        );
+        throw new Error(`Error: ${response.statusText}`);
       }
       const data = await response.json();
       setBio(data.bio);
+      setUserAvatarUrl(data.avatarUrl);
+      setUserEmail(data.email); // Set the user email
       setIsFetchingBio(false);
     } catch (error) {
       console.error("Error fetching bio:", error);
@@ -65,7 +64,7 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   // Fetch bio when component mounts
   useEffect(() => {
     if (userId) {
-      fetchBio();
+      userInfo();
     }
   }, [userId]);
 
@@ -83,11 +82,34 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
   return (
     <section className="feed">
       <div className="flex justify-between w-full">
-        <h1 className="head_text">
-          <span className="purple_gradient">{name} Profile</span>
-        </h1>
+        <div className="flex-1">
+          <Image
+            src={userAvatarUrl} // Replace with the actual path to the avatar image
+            width={100}
+            height={100}
+            alt="Avatar"
+            className="rounded-full"
+          />
+          <div>
+            <h1 className="head_text">
+              <span>{name}</span>
+            </h1>
+          </div>
 
-        {/* Check if the session user's ID matches the profile's user ID */}
+          {editMode ? (
+            <textarea
+              ref={textareaRef}
+              className="w-full text-lg font-bold border border-slate-300 rounded-xl p-2 focus:border-purple-500"
+              value={bio}
+              onChange={(e) => setBio(e.target.value)}
+            />
+          ) : (
+            <p className="md:text-3xl text-2xl font-extrabold md:mt-5 mt-4 w-full">
+              {isFetchingBio ? "Loading..." : bio || "Create your bio"}
+            </p>
+          )}
+        </div>
+
         {session?.user?.id === userId && (
           <div>
             {editMode ? (
@@ -121,20 +143,22 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
           </div>
         )}
       </div>
+      <div className="flex w-full">
+        {session?.user?.id !== userId && (
+          <Link href={`mailto:${userEmail}`}>
+            <div className="flex bg-purple-400 rounded-xl p-2 gap-2 text-white">
+              <Image
+                src="/assets/images/email.svg"
+                width={20}
+                height={20}
+                alt="Email"
+              />
+              Hire Me
+            </div>
+          </Link>
+        )}
+      </div>
       <p className="text-lg w-full ">{desc}</p>
-
-      {editMode ? (
-        <textarea
-          ref={textareaRef}
-          className="w-full text-lg font-bold border border-slate-300 rounded-xl p-2 focus:border-purple-500"
-          value={bio}
-          onChange={(e) => setBio(e.target.value)}
-        />
-      ) : (
-        <p className="md:text-3xl text-2xl font-extrabold md:mt-5 mt-4 w-full">
-          {isFetchingBio ? "Loading..." : bio || "Create your bio"}
-        </p>
-      )}
 
       <div className="project_layout mt-6 project_card">
         {data.map((post) => (
@@ -151,4 +175,3 @@ const Profile = ({ name, desc, data, userId, handleEdit, handleDelete }) => {
 };
 
 export default Profile;
-

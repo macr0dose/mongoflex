@@ -4,12 +4,12 @@ const UserSchema = new Schema({
   name: {
     type: String,
     required: [true, "Name is required!"],
-    minlength: [2, "Name should be at least 2 characters long"],
-    maxlength: [100, "Name should not exceed 100 characters"],
-    match: [
-      /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[\w.]+(?<![_.])$/,
-      "Username invalid, it should contain 8-20 alphanumeric letters and be unique!",
-    ],
+    // minlength: [2, "Name should be at least 2 characters long"],
+    // maxlength: [100, "Name should not exceed 100 characters"],
+    // match: [
+    //   /^(?=.{8,20}$)(?![_.])(?!.*[_.]{2})[\w.]+(?<![_.])$/,
+    //   "Username invalid, it should contain 8-20 alphanumeric letters and be unique!",
+    // ],
   },
   email: {
     type: String,
